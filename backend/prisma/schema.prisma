@@ -7,3 +7,45 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+model TipoOrgao {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orgaos Orgao[]
+}
+
+model Secretaria {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  endereco  String
+  telefone  String?
+  email     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orgaos Orgao[]
+}
+
+model Orgao {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  endereco    String
+  latitude    Float
+  longitude   Float
+  telefone    String?
+  horario     String?
+  fotoUrl     String?
+  ativo       Boolean  @default(true)
+
+  tipoOrgaoId   Int
+  secretariaId  Int
+
+  tipoOrgao  TipoOrgao  @relation(fields: [tipoOrgaoId], references: [id])
+  secretaria Secretaria @relation(fields: [secretariaId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

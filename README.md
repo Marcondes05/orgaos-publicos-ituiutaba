@@ -21,6 +21,7 @@ Disponibilizar uma plataforma digital que permita aos cidadãos localizar órgã
 - Exibir informações detalhadas dos órgãos
 - Possibilitar criação de rotas via Google Maps
 - Permitir à prefeitura gerenciar os dados por meio de um painel administrativo
+- Centralizar e padronizar as informações dos órgãos públicos municipais
 
 ---
 
@@ -40,6 +41,10 @@ Disponibilizar uma plataforma digital que permita aos cidadãos localizar órgã
 - Google Maps API
 - Geolocalização
 
+### Outras Ferramentas
+- Git / GitHub
+- Postman (testes de API)
+
 ---
 
 ## 🗂 Estrutura do Projeto
@@ -47,70 +52,93 @@ Disponibilizar uma plataforma digital que permita aos cidadãos localizar órgã
 ```text
 orgaos-publicos-ituiutaba/
 │
-├── backend/        # API e banco de dados
-├── frontend-web/   # Sistema administrativo
-├── mobile/         # Aplicativo mobile
+├── backend/
+│   ├── prisma/
+│   │   ├── schema.prisma
+│   │   └── migrations/
+│   │
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   ├── prisma/
+│   │   └── app.js
+│   │
+│   ├── server.js
+│   ├── .env
+│   └── package.json
+│
+├── frontend-web/     # Painel administrativo (React)
+├── mobile/           # Aplicativo mobile (React Native)
+├── .gitignore
 └── README.md
 ```
 ---
 
-## 📆 Planejamento de Desenvolvimento
-## 🔹 Fase 1 – Planejamento e Ambiente (Concluída)
+## 📆 Fases de Desenvolvimento
+## 🔹 Fase 1 – Planejamento e Ambiente (CONCLUÍDA)
 
-        Definição conceitual das telas do sistema
+        Objetivo: Preparar o ambiente e definir a base do sistema.
 
-        Definição do modelo de dados (Tipo de Órgão, Secretaria, Órgão)
+        ✔ Definição conceitual das telas do sistema
+        ✔ Definição do modelo de dados (Tipo de Órgão, Secretaria e Órgão)
+        ✔ Criação da estrutura do repositório
+        ✔ Configuração do backend
+        ✔ Integração do Prisma com PostgreSQL no Supabase
+        ✔ Ambiente validado e funcional
 
-        Criação da estrutura do projeto
+## 🔹 Fase 2 – Backend (CONCLUÍDA)
 
-        Configuração do backend
+        Objetivo: Desenvolver o backend e validar a comunicação com o banco de dados.
 
-        Integração do Prisma com o banco PostgreSQL no Supabase
+        ✔ Modelagem física do banco de dados
+        ✔ Criação das tabelas no PostgreSQL
+        ✔ Implementação da API REST com Express
+        ✔ CRUD básico de:
 
-## 🔹 Fase 2 – Backend (Em andamento)
+        Tipo de Órgão
 
-        Criação das tabelas no banco de dados
+        Secretaria
 
-        Implementação da API REST
+        Órgão Público (com relacionamentos)
 
-        Autenticação do administrador
+        ✔ Testes realizados via API (Postman/Insomnia)
 
-        CRUD de:
+## 🔹 Fase 3 – Sistema Web Administrativo (A FAZER)
+
+        Objetivo: Criar o painel administrativo para a prefeitura.
+
+        ⬜ Autenticação do administrador
+        ⬜ Tela de login
+        ⬜ Cadastro, edição e desativação de:
 
         Tipos de Órgãos
 
         Secretarias
 
         Órgãos Públicos
+        ⬜ Integração completa com a API
 
-## 🔹 Fase 3 – Frontend Web (Admin)
+## 🔹 Fase 4 – Aplicativo Mobile (A FAZER)
 
-        Login do administrador
+        Objetivo: Desenvolver o aplicativo para o cidadão.
 
-        Telas de cadastro e gerenciamento
+        ⬜ Mapa com localização do usuário
+        ⬜ Exibição dos órgãos públicos no mapa
+        ⬜ Busca e filtragem por tipo de órgão
+        ⬜ Tela de detalhes do órgão
+        ⬜ Integração com Google Maps para criação de rotas
 
-        Integração com a API
+## 🔹 Fase 5 – Ajustes Finais e Demonstração (A FAZER)
 
-## 🔹 Fase 4 – Aplicativo Mobile
+        Objetivo: Finalizar o MVP para apresentação.
 
-        Mapa com localização do usuário
+        ⬜ Testes finais
+        ⬜ Ajustes visuais e de usabilidade
+        ⬜ Inserção de dados de demonstração
+        ⬜ Preparação para apresentação do MVP
 
-        Exibição dos órgãos no mapa
+## 🏛 Observações Finais
 
-        Tela de detalhes do órgão
+Este projeto está sendo desenvolvido como parte de um estágio supervisionado, seguindo boas práticas de desenvolvimento de software, organização de código e planejamento incremental.
 
-        Integração com Google Maps para rotas
-
-## 🔹 Fase 5 – Ajustes e Demonstração
-
-        Testes finais
-
-        Ajustes visuais
-
-        Preparação do MVP para apresentação
-
-## 🏛 Observações
-
----
-
-Este projeto está sendo desenvolvido como MVP (Produto Mínimo Viável) para fins acadêmicos, com possibilidade de futura implantação em ambiente oficial da Prefeitura de Ituiutaba.
+A solução foi pensada para possibilitar futura implantação em ambiente oficial da Prefeitura de Ituiutaba, respeitando princípios de segurança, escalabilidade e manutenibilidade.
