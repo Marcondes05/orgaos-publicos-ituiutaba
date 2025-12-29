@@ -5,6 +5,7 @@ const cors = require("cors");
 const tipoOrgaoRoutes = require("./routes/tipoOrgaoRoutes");
 const secretariaRoutes = require("./routes/secretariaRoutes");
 const orgaoRoutes = require("./routes/orgaoRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.get("/", (req, res) => {
 app.use("/tipos-orgaos", tipoOrgaoRoutes);
 app.use("/secretarias", secretariaRoutes);
 app.use("/orgaos", orgaoRoutes);
+app.use("/auth", authRoutes);
 
 module.exports = app;
