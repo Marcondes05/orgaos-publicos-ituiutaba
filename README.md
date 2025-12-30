@@ -3,25 +3,26 @@
 ## 📌 Descrição do Projeto
 Este projeto consiste no desenvolvimento de um **sistema informativo de órgãos públicos do município de Ituiutaba**, composto por:
 
+- 💻 Um **sistema web administrativo** para uso da Prefeitura
 - 📱 Um **aplicativo mobile** voltado ao cidadão
-- 💻 Um **sistema web administrativo** destinado à Prefeitura
 
-O sistema tem como objetivo **facilitar o acesso da população às informações dos órgãos públicos**, utilizando geolocalização e integração com o Google Maps.
+A solução tem como finalidade **centralizar, organizar e disponibilizar informações dos órgãos públicos municipais**, utilizando **geolocalização e integração com o Google Maps**, facilitando o acesso da população aos serviços públicos.
 
 ---
 
 ## 🎯 Objetivo Geral
-Disponibilizar uma plataforma digital que permita aos cidadãos localizar órgãos públicos do município de Ituiutaba, visualizar informações relevantes e traçar rotas até esses locais.
+Desenvolver uma plataforma digital que permita aos cidadãos localizar órgãos públicos do município de Ituiutaba, visualizar informações detalhadas e traçar rotas até esses locais, ao mesmo tempo em que oferece à prefeitura um painel administrativo para gerenciamento dos dados.
 
 ---
 
 ## 🎯 Objetivos Específicos
-- Exibir órgãos públicos em um mapa interativo
+- Exibir órgãos públicos em mapa interativo
 - Permitir busca e filtragem por tipo de órgão
-- Exibir informações detalhadas dos órgãos
+- Exibir informações detalhadas (endereço, telefone, horário)
 - Possibilitar criação de rotas via Google Maps
 - Permitir à prefeitura gerenciar os dados por meio de um painel administrativo
 - Centralizar e padronizar as informações dos órgãos públicos municipais
+- Garantir segurança e controle de acesso administrativo
 
 ---
 
@@ -32,18 +33,23 @@ Disponibilizar uma plataforma digital que permita aos cidadãos localizar órgã
 - Express
 - Prisma ORM
 - PostgreSQL (Supabase)
+- JWT (autenticação)
 
 ### Frontend Web (Admin)
-- React.js
+- React.js (Vite)
+- Axios
+- React Router DOM
+- Google Maps JavaScript API
 
-### Mobile
-- React Native (a definir implementação final)
+### Mobile (planejado)
+- React Native
 - Google Maps API
-- Geolocalização
+- Geolocalização do dispositivo
 
 ### Outras Ferramentas
 - Git / GitHub
-- Postman (testes de API)
+- Postman / Insomnia
+- Google Cloud Console
 
 ---
 
@@ -60,85 +66,75 @@ orgaos-publicos-ituiutaba/
 │   ├── src/
 │   │   ├── controllers/
 │   │   ├── routes/
-│   │   ├── prisma/
+│   │   ├── middlewares/
+│   │   ├── services/
 │   │   └── app.js
 │   │
 │   ├── server.js
 │   ├── .env
 │   └── package.json
 │
-├── frontend-web/     # Painel administrativo (React)
-├── mobile/           # Aplicativo mobile (React Native)
+├── frontend-web/
+│   └── admin/
+│       ├── src/
+│       │   ├── pages/
+│       │   ├── components/
+│       │   ├── services/
+│       │   └── App.jsx
+│       ├── .env
+│       └── package.json
+│
+├── mobile/           # Aplicativo mobile (a desenvolver)
 ├── .gitignore
 └── README.md
 ```
+
 ---
 
 ## 📆 Fases de Desenvolvimento
-## 🔹 Fase 1 – Planejamento e Ambiente (CONCLUÍDA)
 
-        Objetivo: Preparar o ambiente e definir a base do sistema.
+### 🔹 Fase 1 – Planejamento e Ambiente (CONCLUÍDA)
+✔ Definição conceitual das telas  
+✔ Definição do modelo de dados  
+✔ Criação do repositório Git  
+✔ Configuração do backend  
+✔ Integração do Prisma com PostgreSQL  
+✔ Ambiente validado  
 
-        ✔ Definição conceitual das telas do sistema
-        ✔ Definição do modelo de dados (Tipo de Órgão, Secretaria e Órgão)
-        ✔ Criação da estrutura do repositório
-        ✔ Configuração do backend
-        ✔ Integração do Prisma com PostgreSQL no Supabase
-        ✔ Ambiente validado e funcional
+---
 
-## 🔹 Fase 2 – Backend (CONCLUÍDA)
+### 🔹 Fase 2 – Backend (CONCLUÍDA)
+✔ Modelagem do banco de dados  
+✔ API REST com Express  
+✔ CRUD de Tipos, Secretarias e Órgãos  
+✔ Testes de API  
 
-        Objetivo: Desenvolver o backend e validar a comunicação com o banco de dados.
+---
 
-        ✔ Modelagem física do banco de dados
-        ✔ Criação das tabelas no PostgreSQL
-        ✔ Implementação da API REST com Express
-        ✔ CRUD básico de:
+### 🔹 Fase 3 – Sistema Web Administrativo (CONCLUÍDA)
+✔ Autenticação JWT  
+✔ Painel administrativo  
+✔ CRUD completo com delete lógico  
+✔ Integração com Google Maps  
+✔ Cadastro de órgão por CEP + mapa interativo  
 
-        Tipo de Órgão
+---
 
-        Secretaria
+### 🔹 Fase 4 – Aplicativo Mobile (A FAZER)
+⬜ Mapa com localização do usuário  
+⬜ Exibição dos órgãos  
+⬜ Tela de detalhes  
+⬜ Rotas via Google Maps  
 
-        Órgão Público (com relacionamentos)
+---
 
-        ✔ Testes realizados via API (Postman/Insomnia)
+### 🔹 Fase 5 – Ajustes Finais e Demonstração (A FAZER)
+⬜ Testes finais  
+⬜ Ajustes visuais  
+⬜ Dados de demonstração  
+⬜ Apresentação do MVP  
 
-## 🔹 Fase 3 – Sistema Web Administrativo (A FAZER)
-
-        Objetivo: Criar o painel administrativo para a prefeitura.
-
-        ⬜ Autenticação do administrador
-        ⬜ Tela de login
-        ⬜ Cadastro, edição e desativação de:
-
-        Tipos de Órgãos
-
-        Secretarias
-
-        Órgãos Públicos
-        ⬜ Integração completa com a API
-
-## 🔹 Fase 4 – Aplicativo Mobile (A FAZER)
-
-        Objetivo: Desenvolver o aplicativo para o cidadão.
-
-        ⬜ Mapa com localização do usuário
-        ⬜ Exibição dos órgãos públicos no mapa
-        ⬜ Busca e filtragem por tipo de órgão
-        ⬜ Tela de detalhes do órgão
-        ⬜ Integração com Google Maps para criação de rotas
-
-## 🔹 Fase 5 – Ajustes Finais e Demonstração (A FAZER)
-
-        Objetivo: Finalizar o MVP para apresentação.
-
-        ⬜ Testes finais
-        ⬜ Ajustes visuais e de usabilidade
-        ⬜ Inserção de dados de demonstração
-        ⬜ Preparação para apresentação do MVP
+---
 
 ## 🏛 Observações Finais
-
-Este projeto está sendo desenvolvido como parte de um estágio supervisionado, seguindo boas práticas de desenvolvimento de software, organização de código e planejamento incremental.
-
-A solução foi pensada para possibilitar futura implantação em ambiente oficial da Prefeitura de Ituiutaba, respeitando princípios de segurança, escalabilidade e manutenibilidade.
+Projeto desenvolvido como parte de um **estágio supervisionado**, seguindo boas práticas de desenvolvimento e visando futura implantação em ambiente oficial da Prefeitura de Ituiutaba.

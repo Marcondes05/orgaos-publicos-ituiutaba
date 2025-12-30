@@ -1,19 +1,27 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import MapPicker from "../components/MapPicker";
 
 function Orgaos() {
   const [orgaos, setOrgaos] = useState([]);
   const [tipos, setTipos] = useState([]);
   const [secretarias, setSecretarias] = useState([]);
 
+  // Dados do órgão
   const [nome, setNome] = useState("");
   const [endereco, setEndereco] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
   const [telefone, setTelefone] = useState("");
   const [horario, setHorario] = useState("");
   const [tipoOrgaoId, setTipoOrgaoId] = useState("");
   const [secretariaId, setSecretariaId] = useState("");
+
+  // Localização
+  const [cep, setCep] = useState("");
+  const [numero, setNumero] = useState("");
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [buscarMapa, setBuscarMapa] = useState(false);
+
   const [erro, setErro] = useState("");
 
   async function carregarDados() {
@@ -39,12 +47,14 @@ function Orgaos() {
     if (
       !nome ||
       !endereco ||
-      !latitude ||
-      !longitude ||
       !tipoOrgaoId ||
-      !secretariaId
+      !secretariaId ||
+      latitude === null ||
+      longitude === null
     ) {
-      setErro("Preencha todos os campos obrigatórios");
+      setErro(
+        "Preencha todos os campos obrigatórios e confirme a localização no mapa"
+      );
       return;
     }
 
@@ -52,26 +62,30 @@ function Orgaos() {
       await api.post("/orgaos", {
         nome,
         endereco,
-        latitude: Number(latitude),
-        longitude: Number(longitude),
         telefone,
         horario,
+        latitude,
+        longitude,
         tipoOrgaoId: Number(tipoOrgaoId),
         secretariaId: Number(secretariaId),
       });
 
+      // Limpar formulário
       setNome("");
       setEndereco("");
-      setLatitude("");
-      setLongitude("");
       setTelefone("");
       setHorario("");
       setTipoOrgaoId("");
       setSecretariaId("");
+      setCep("");
+      setNumero("");
+      setLatitude(null);
+      setLongitude(null);
+      setBuscarMapa(false);
 
       carregarDados();
     } catch (error) {
-      setErro("Erro ao criar órgão");
+      setErro("Erro ao criar órgão público");
     }
   }
 
@@ -79,11 +93,17 @@ function Orgaos() {
     carregarDados();
   }, []);
 
+  // Endereço usado pelo mapa (CEP + número)
+  const enderecoCompleto =
+    buscarMapa && cep && numero
+      ? `${cep}, ${numero}, Ituiutaba, MG, Brasil`
+      : null;
+
   return (
     <div>
       <h2>Órgãos Públicos</h2>
 
-      <form onSubmit={criarOrgao} style={{ marginBottom: "20px" }}>
+      <form onSubmit={criarOrgao} style={{ marginBottom: "30px" }}>
         <input
           type="text"
           placeholder="Nome do órgão"
@@ -94,27 +114,9 @@ function Orgaos() {
 
         <input
           type="text"
-          placeholder="Endereço"
+          placeholder="Endereço (Rua / Bairro)"
           value={endereco}
           onChange={(e) => setEndereco(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
-        />
-
-        <input
-          type="number"
-          step="any"
-          placeholder="Latitude"
-          value={latitude}
-          onChange={(e) => setLatitude(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
-        />
-
-        <input
-          type="number"
-          step="any"
-          placeholder="Longitude"
-          value={longitude}
-          onChange={(e) => setLongitude(e.target.value)}
           style={{ display: "block", marginBottom: "8px", padding: "6px" }}
         />
 
@@ -139,7 +141,7 @@ function Orgaos() {
           onChange={(e) => setTipoOrgaoId(e.target.value)}
           style={{ display: "block", marginBottom: "8px", padding: "6px" }}
         >
-          <option value="">Selecione o tipo</option>
+          <option value="">Selecione o tipo de órgão</option>
           {tipos.map((tipo) => (
             <option key={tipo.id} value={tipo.id}>
               {tipo.nome}
@@ -160,16 +162,60 @@ function Orgaos() {
           ))}
         </select>
 
-        <button type="submit">Adicionar</button>
+        <hr />
+
+        <h4>Localização</h4>
+
+        <input
+          type="text"
+          placeholder="CEP"
+          value={cep}
+          onChange={(e) => setCep(e.target.value)}
+          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
+        />
+
+        <input
+          type="text"
+          placeholder="Número"
+          value={numero}
+          onChange={(e) => setNumero(e.target.value)}
+          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
+        />
+
+        <button
+          type="button"
+          onClick={() => setBuscarMapa(true)}
+          style={{ marginBottom: "10px" }}
+        >
+          Buscar no mapa
+        </button>
+
+        <MapPicker
+          enderecoCompleto={enderecoCompleto}
+          onLocationChange={(lat, lng) => {
+            setLatitude(lat);
+            setLongitude(lng);
+          }}
+        />
+
+        {erro && <p style={{ color: "red", marginTop: "10px" }}>{erro}</p>}
+
+        <button type="submit" style={{ marginTop: "15px" }}>
+          Adicionar Órgão
+        </button>
       </form>
 
-      {erro && <p style={{ color: "red" }}>{erro}</p>}
+      <hr />
+
+      <h3>Órgãos cadastrados</h3>
 
       <ul>
         {orgaos.map((orgao) => (
-          <li key={orgao.id}>
+          <li key={orgao.id} style={{ marginBottom: "15px" }}>
             <strong>{orgao.nome}</strong> <br />
             {orgao.endereco} <br />
+            Telefone: {orgao.telefone || "Não informado"} <br />
+            Horário: {orgao.horario || "Não informado"} <br />
             Tipo: {orgao.tipoOrgao?.nome} <br />
             Secretaria: {orgao.secretaria?.nome}
           </li>
