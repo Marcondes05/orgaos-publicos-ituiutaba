@@ -1,85 +1,64 @@
-import { useEffect, useState } from "react";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
-import { API_URL } from "../constants/api";
-
-type Orgao = {
-  id: number;
-  nome: string;
-  endereco: string;
-};
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import { useLocation } from "../hooks/useLocation";
 
 export default function Home() {
-  const [orgaos, setOrgaos] = useState<Orgao[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [erro, setErro] = useState("");
-
-  async function carregarOrgaos() {
-    try {
-      const response = await fetch(`${API_URL}/orgaos`);
-      const data = await response.json();
-      setOrgaos(data);
-    } catch (error) {
-      setErro("Erro ao carregar órgãos públicos");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    carregarOrgaos();
-  }, []);
+  const { location, errorMsg, loading } = useLocation();
 
   if (loading) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <View style={styles.center}>
         <ActivityIndicator size="large" />
-        <Text>Carregando...</Text>
+        <Text>Obtendo localização...</Text>
       </View>
     );
   }
 
-  if (erro) {
+  if (errorMsg) {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text>{erro}</Text>
+      <View style={styles.center}>
+        <Text>{errorMsg}</Text>
+      </View>
+    );
+  }
+
+  if (!location) {
+    return (
+      <View style={styles.center}>
+        <Text>Localização não encontrada</Text>
       </View>
     );
   }
 
   return (
-    <View style={{ flex: 1, padding: 16 }}>
-      <Text style={{ fontSize: 18, marginBottom: 12 }}>
-        Órgãos Públicos
-      </Text>
-
-      <FlatList
-        data={orgaos}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              padding: 12,
-              borderBottomWidth: 1,
-              borderColor: "#ccc",
-            }}
-          >
-            <Text style={{ fontWeight: "bold" }}>{item.nome}</Text>
-            <Text>{item.endereco}</Text>
-          </View>
-        )}
+    <MapView
+      style={styles.map}
+      initialRegion={{
+        latitude: location.latitude,
+        longitude: location.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      }}
+      showsUserLocation
+    >
+      <Marker
+        coordinate={{
+          latitude: location.latitude,
+          longitude: location.longitude,
+        }}
+        title="Você está aqui"
       />
-    </View>
+    </MapView>
   );
 }
+
+const styles = StyleSheet.create({
+  map: {
+    flex: 1,
+  },
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
