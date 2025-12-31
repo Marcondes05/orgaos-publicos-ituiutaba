@@ -11,7 +11,9 @@ function Orgaos() {
   const [nome, setNome] = useState("");
   const [endereco, setEndereco] = useState("");
   const [telefone, setTelefone] = useState("");
-  const [horario, setHorario] = useState("");
+  const [email, setEmail] = useState("");
+  const [horarioAbertura, setHorarioAbertura] = useState("");
+  const [horarioFechamento, setHorarioFechamento] = useState("");
   const [tipoOrgaoId, setTipoOrgaoId] = useState("");
   const [secretariaId, setSecretariaId] = useState("");
 
@@ -63,7 +65,9 @@ function Orgaos() {
         nome,
         endereco,
         telefone,
-        horario,
+        email,
+        horarioAbertura,
+        horarioFechamento,
         latitude,
         longitude,
         tipoOrgaoId: Number(tipoOrgaoId),
@@ -74,7 +78,9 @@ function Orgaos() {
       setNome("");
       setEndereco("");
       setTelefone("");
-      setHorario("");
+      setEmail("");
+      setHorarioAbertura("");
+      setHorarioFechamento("");
       setTipoOrgaoId("");
       setSecretariaId("");
       setCep("");
@@ -93,7 +99,6 @@ function Orgaos() {
     carregarDados();
   }, []);
 
-  // Endereço usado pelo mapa (CEP + número)
   const enderecoCompleto =
     buscarMapa && cep && numero
       ? `${cep}, ${numero}, Ituiutaba, MG, Brasil`
@@ -105,43 +110,48 @@ function Orgaos() {
 
       <form onSubmit={criarOrgao} style={{ marginBottom: "30px" }}>
         <input
-          type="text"
           placeholder="Nome do órgão"
           value={nome}
           onChange={(e) => setNome(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
         />
 
         <input
-          type="text"
-          placeholder="Endereço (Rua / Bairro)"
+          placeholder="Endereço"
           value={endereco}
           onChange={(e) => setEndereco(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
         />
 
         <input
-          type="text"
           placeholder="Telefone"
           value={telefone}
           onChange={(e) => setTelefone(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
         />
 
         <input
-          type="text"
-          placeholder="Horário de funcionamento"
-          value={horario}
-          onChange={(e) => setHorario(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
+          placeholder="E-mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <label>Horário de abertura</label>
+        <input
+          type="time"
+          value={horarioAbertura}
+          onChange={(e) => setHorarioAbertura(e.target.value)}
+        />
+
+        <label>Horário de fechamento</label>
+        <input
+          type="time"
+          value={horarioFechamento}
+          onChange={(e) => setHorarioFechamento(e.target.value)}
         />
 
         <select
           value={tipoOrgaoId}
           onChange={(e) => setTipoOrgaoId(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
         >
-          <option value="">Selecione o tipo de órgão</option>
+          <option value="">Tipo do órgão</option>
           {tipos.map((tipo) => (
             <option key={tipo.id} value={tipo.id}>
               {tipo.nome}
@@ -152,9 +162,8 @@ function Orgaos() {
         <select
           value={secretariaId}
           onChange={(e) => setSecretariaId(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
         >
-          <option value="">Selecione a secretaria</option>
+          <option value="">Secretaria</option>
           {secretarias.map((sec) => (
             <option key={sec.id} value={sec.id}>
               {sec.nome}
@@ -162,31 +171,21 @@ function Orgaos() {
           ))}
         </select>
 
-        <hr />
-
         <h4>Localização</h4>
 
         <input
-          type="text"
           placeholder="CEP"
           value={cep}
           onChange={(e) => setCep(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
         />
 
         <input
-          type="text"
           placeholder="Número"
           value={numero}
           onChange={(e) => setNumero(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
         />
 
-        <button
-          type="button"
-          onClick={() => setBuscarMapa(true)}
-          style={{ marginBottom: "10px" }}
-        >
+        <button type="button" onClick={() => setBuscarMapa(true)}>
           Buscar no mapa
         </button>
 
@@ -198,24 +197,24 @@ function Orgaos() {
           }}
         />
 
-        {erro && <p style={{ color: "red", marginTop: "10px" }}>{erro}</p>}
+        {erro && <p style={{ color: "red" }}>{erro}</p>}
 
-        <button type="submit" style={{ marginTop: "15px" }}>
-          Adicionar Órgão
-        </button>
+        <button type="submit">Adicionar Órgão</button>
       </form>
-
-      <hr />
 
       <h3>Órgãos cadastrados</h3>
 
       <ul>
         {orgaos.map((orgao) => (
-          <li key={orgao.id} style={{ marginBottom: "15px" }}>
+          <li key={orgao.id}>
             <strong>{orgao.nome}</strong> <br />
             {orgao.endereco} <br />
             Telefone: {orgao.telefone || "Não informado"} <br />
-            Horário: {orgao.horario || "Não informado"} <br />
+            Horário:{" "}
+            {orgao.horarioAbertura && orgao.horarioFechamento
+              ? `${orgao.horarioAbertura} - ${orgao.horarioFechamento}`
+              : "Não informado"}
+            <br />
             Tipo: {orgao.tipoOrgao?.nome} <br />
             Secretaria: {orgao.secretaria?.nome}
           </li>

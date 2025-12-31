@@ -16,7 +16,6 @@ async function listarOrgaos(req, res) {
   }
 }
 
-
 async function criarOrgao(req, res) {
   try {
     const {
@@ -25,7 +24,9 @@ async function criarOrgao(req, res) {
       latitude,
       longitude,
       telefone,
-      horario,
+      email,
+      horarioAbertura,
+      horarioFechamento,
       fotoUrl,
       tipoOrgaoId,
       secretariaId,
@@ -51,7 +52,9 @@ async function criarOrgao(req, res) {
         latitude,
         longitude,
         telefone,
-        horario,
+        email,
+        horarioAbertura,
+        horarioFechamento,
         fotoUrl,
         tipoOrgaoId,
         secretariaId,
@@ -73,7 +76,9 @@ async function atualizarOrgao(req, res) {
       latitude,
       longitude,
       telefone,
-      horario,
+      email,
+      horarioAbertura,
+      horarioFechamento,
       tipoOrgaoId,
       secretariaId,
     } = req.body;
@@ -99,7 +104,9 @@ async function atualizarOrgao(req, res) {
         latitude,
         longitude,
         telefone,
-        horario,
+        email,
+        horarioAbertura,
+        horarioFechamento,
         tipoOrgaoId,
         secretariaId,
       },
@@ -132,4 +139,3 @@ module.exports = {
   atualizarOrgao,
   desativarOrgao,
 };
-

@@ -1,15 +1,12 @@
-import { useState } from "react";
-import TiposOrgao from "./TiposOrgao";
-import Secretarias from "./Secretarias";
-import Orgaos from "./Orgaos";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const [pagina, setPagina] = useState("tipos");
+  const navigate = useNavigate();
 
   function logout() {
     localStorage.clear();
-    window.location.href = "/login";
+    navigate("/login");
   }
 
   return (
@@ -22,20 +19,23 @@ function Dashboard() {
       <hr style={{ margin: "20px 0" }} />
 
       <nav style={{ marginBottom: "20px" }}>
-        <button onClick={() => setPagina("tipos")}>
-          Tipos de Órgão
-        </button>
-        <button onClick={() => setPagina("secretarias")}>
-          Secretarias
-        </button>
-        <button onClick={() => setPagina("orgaos")}>
-          Órgãos Públicos
-        </button>
+        <Link to="/tipos-orgaos">
+          <button>Tipos de Órgão</button>
+        </Link>
+
+        <Link to="/secretarias">
+          <button>Secretarias</button>
+        </Link>
+
+        <Link to="/orgaos">
+          <button>Órgãos Públicos</button>
+        </Link>
       </nav>
 
-      {pagina === "tipos" && <TiposOrgao />}
-      {pagina === "secretarias" && <Secretarias />}
-      {pagina === "orgaos" && <Orgaos />}
+      <hr />
+
+      {/* Aqui entram as páginas protegidas */}
+      <Outlet />
     </div>
   );
 }
