@@ -18,8 +18,8 @@ Desenvolver uma plataforma digital que permita aos cidadãos localizar órgãos 
 ## 🎯 Objetivos Específicos
 - Exibir órgãos públicos em mapa interativo
 - Permitir busca e filtragem por tipo de órgão
-- Exibir informações detalhadas (endereço, telefone, horário)
-- Possibilitar criação de rotas via Google Maps
+- Exibir informações detalhadas (endereço, telefone, horário de funcionamento)
+- Possibilitar criação de rotas no mapa e via Google Maps
 - Permitir à prefeitura gerenciar os dados por meio de um painel administrativo
 - Centralizar e padronizar as informações dos órgãos públicos municipais
 - Garantir segurança e controle de acesso administrativo
@@ -41,10 +41,13 @@ Desenvolver uma plataforma digital que permita aos cidadãos localizar órgãos 
 - React Router DOM
 - Google Maps JavaScript API
 
-### Mobile (planejado)
-- React Native
-- Google Maps API
+### Mobile
+- React Native (Expo)
+- react-native-maps
+- Google Maps SDK (Android / iOS)
+- Google Directions API
 - Geolocalização do dispositivo
+- Bottom Sheet
 
 ### Outras Ferramentas
 - Git / GitHub
@@ -84,7 +87,14 @@ orgaos-publicos-ituiutaba/
 │       ├── .env
 │       └── package.json
 │
-├── mobile/           # Aplicativo mobile (a desenvolver)
+├── mobile/
+│   └── app/
+│       ├── app/
+│       ├── components/
+│       ├── hooks/
+│       ├── constants/
+│       └── package.json
+│
 ├── .gitignore
 └── README.md
 ```
@@ -106,35 +116,40 @@ orgaos-publicos-ituiutaba/
 ### 🔹 Fase 2 – Backend (CONCLUÍDA)
 ✔ Modelagem do banco de dados  
 ✔ API REST com Express  
-✔ CRUD de Tipos, Secretarias e Órgãos  
-✔ Testes de API  
+✔ CRUD de Tipos de Órgão, Secretarias e Órgãos  
+✔ Autenticação com JWT  
 
 ---
 
 ### 🔹 Fase 3 – Sistema Web Administrativo (CONCLUÍDA)
-✔ Autenticação JWT  
-✔ Painel administrativo  
-✔ CRUD completo com delete lógico  
-✔ Integração com Google Maps  
-✔ Cadastro de órgão por CEP + mapa interativo  
+✔ Login administrativo  
+✔ Proteção de rotas  
+✔ CRUD completo  
+✔ Cadastro com mapa  
 
 ---
 
-### 🔹 Fase 4 – Aplicativo Mobile (A FAZER)
-⬜ Mapa com localização do usuário  
-⬜ Exibição dos órgãos  
-⬜ Tela de detalhes  
-⬜ Rotas via Google Maps  
+### 🔹 Fase 4 – Aplicativo Mobile (CONCLUÍDA)
+✔ Mapa com localização do usuário  
+✔ Detalhes do órgão (Bottom Sheet)  
+✔ Rotas no mapa e Google Maps  
 
 ---
 
-### 🔹 Fase 5 – Ajustes Finais e Demonstração (A FAZER)
+### 🔹 Fase 5 – Melhorias (EM ANDAMENTO)
+🚧 Ícones por tipo  
+🚧 Filtros  
+🚧 Busca com autocomplete  
+🚧 UX/UI  
+
+---
+
+### 🔹 Fase 6 – Demonstração (PLANEJADA)
 ⬜ Testes finais  
-⬜ Ajustes visuais  
-⬜ Dados de demonstração  
-⬜ Apresentação do MVP  
+⬜ Documentação  
+⬜ Apresentação  
 
 ---
 
 ## 🏛 Observações Finais
-Projeto desenvolvido como parte de um **estágio supervisionado**, seguindo boas práticas de desenvolvimento e visando futura implantação em ambiente oficial da Prefeitura de Ituiutaba.
+Projeto desenvolvido como parte de um **estágio supervisionado**, com foco em qualidade, usabilidade e evolução futura.
