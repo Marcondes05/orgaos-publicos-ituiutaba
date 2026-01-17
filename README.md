@@ -142,6 +142,150 @@ orgaos-publicos-ituiutaba/
 🚧 Busca com autocomplete  
 🚧 UX/UI  
 
+### 🗓️ DIA 1 — Revisão Geral e Planejamento Técnico
+
+    Objetivo: Garantir base estável antes das melhorias.
+
+    Atividades:
+
+    Revisão geral do código (backend, admin e mobile)
+
+    Limpeza final de código (logs, comentários desnecessários)
+
+    Revisão do README e alinhamento do cronograma
+
+    Definição técnica de como cada melhoria será implementada
+
+    📌 Resultado esperado: código organizado e plano claro de execução.
+
+### 🗓️ DIA 2 — Ícones Personalizados no Mapa (Mobile)
+
+    Objetivo: Melhorar leitura visual do mapa.
+
+    Atividades:
+
+    Definir ícones por tipo de órgão (UBS, Secretaria, Escola, etc.)
+
+    Associar tipo de órgão ao ícone correspondente
+
+    Aplicar ícones personalizados nos marcadores do mapa
+
+    Testes visuais no mapa
+
+    📌 Resultado esperado: mapa mais intuitivo e visualmente organizado.
+
+### 🗓️ DIA 3 — Filtro de Busca por Tipo de Órgão (Mobile)
+
+    Objetivo: Reduzir poluição visual e facilitar navegação.
+
+    Atividades:
+
+    Criar seletor de tipo de órgão (chips ou dropdown)
+
+    Filtrar os órgãos exibidos no mapa conforme o tipo selecionado
+
+    Ajustar estado e comportamento do mapa
+
+    Testes de usabilidade
+
+    📌 Resultado esperado: usuário visualiza apenas os órgãos desejados.
+
+### 🗓️ DIA 4 — Campo de Busca com Autocomplete (Mobile)
+
+    Objetivo: Facilitar localização direta de um órgão.
+
+    Atividades:
+
+    Criar campo de busca por nome do órgão
+
+    Implementar sugestões enquanto o usuário digita
+
+    Centralizar o mapa ao selecionar um órgão
+
+    Abrir automaticamente o Bottom Sheet com os detalhes
+
+    📌 Resultado esperado: busca rápida e eficiente por nome.
+
+### 🗓️ DIA 5 — Melhorias de UX/UI no Mobile
+
+    Objetivo: Tornar o aplicativo mais agradável e intuitivo.
+
+    Atividades:
+
+    Ajustar espaçamentos e tamanhos de fonte
+
+    Melhorar organização do Bottom Sheet
+
+    Padronizar cores e botões
+
+    Melhorar feedback visual das ações do usuário
+
+    📌 Resultado esperado: aplicativo mais limpo e profissional.
+
+### 🗓️ DIA 6 — Melhorias de UX/UI no Painel Administrativo
+
+    Objetivo: Facilitar o uso do sistema pela prefeitura.
+
+    Atividades:
+
+    Reorganizar formulários
+
+    Melhorar feedback de sucesso/erro
+
+    Ajustar navegação e layout
+
+    Pequenas melhorias visuais (legibilidade e organização)
+
+    📌 Resultado esperado: painel mais intuitivo e fácil de usar.
+
+### 🗓️ DIA 7 — Exibição de Status do Órgão (Aberto / Fechado)
+
+    Objetivo: Informação útil ao cidadão.
+
+    Atividades:
+
+    Utilizar horário de funcionamento já cadastrado
+
+    Calcular status com base no horário atual
+
+    Exibir status visual no Bottom Sheet
+
+    Testar diferentes horários
+
+    📌 Resultado esperado: usuário sabe se o órgão está aberto no momento.
+
+### 🗓️ DIA 8 — Inclusão de Foto do Órgão
+
+    Objetivo: Melhor reconhecimento visual do local.
+
+    Atividades:
+
+    Utilizar campo de URL de imagem já existente
+
+    Exibir foto no Bottom Sheet do mobile
+
+    Ajustar layout para imagem
+
+    Testes com imagens reais
+
+    📌 Resultado esperado: visual mais rico e informativo.
+
+### 🗓️ DIA 9 — Testes Gerais e Ajustes Finais
+
+    Objetivo: Garantir estabilidade do sistema.
+
+    Atividades:
+
+    Testes completos no mobile
+
+    Testes no painel administrativo
+
+    Correção de pequenos bugs
+
+    Ajustes finos de usabilidade
+
+    📌 Resultado esperado: sistema estável para demonstração.
+
 ---
 
 ### 🔹 Fase 6 – Demonstração (PLANEJADA)
@@ -153,3 +297,59 @@ orgaos-publicos-ituiutaba/
 
 ## 🏛 Observações Finais
 Projeto desenvolvido como parte de um **estágio supervisionado**, com foco em qualidade, usabilidade e evolução futura.
+
+---
+
+## Rodar o Programa 
+
+    🖥️ TERMINAL 1 — BACKEND (API)
+    📁 Caminho
+    cd backend
+
+    ▶️ Comando para rodar
+    npm install   # só na primeira vez
+    npm run dev
+
+    ✅ Resultado esperado
+
+    No terminal:
+
+    Servidor rodando na porta 3000
+
+
+    📌 A API ficará em:
+
+    http://localhost:3000
+
+
+    ou
+
+    http://SEU_IP:3000
+
+    🖥️ TERMINAL 2 — FRONTEND WEB (ADMIN)
+    📁 Caminho
+    cd frontend-web/admin
+
+    ▶️ Comando para rodar
+    npm install   # só na primeira vez
+    npm run dev
+
+    ✅ Resultado esperado
+
+    No terminal:
+
+    Local: http://localhost:5173
+
+    admin@ituiutaba.mg.gov.br
+
+    📌 Acesse no navegador:
+
+    http://localhost:5173
+
+    🖥️ TERMINAL 3 — MOBILE (APP)
+    📁 Caminho
+    cd mobile/app
+
+    ▶️ Comando para rodar
+    npm install   # só na primeira vez
+    npx expo start

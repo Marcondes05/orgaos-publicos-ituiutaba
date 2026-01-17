@@ -13,14 +13,17 @@ async function listarTipos(req, res) {
 
 async function criarTipo(req, res) {
   try {
-    const { nome } = req.body;
+    const { nome, descricao } = req.body;
 
     if (!nome) {
       return res.status(400).json({ error: "Nome é obrigatório" });
     }
 
     const tipo = await prisma.tipoOrgao.create({
-      data: { nome },
+      data: { 
+        nome,
+        descricao,
+       },
     });
 
     res.status(201).json(tipo);

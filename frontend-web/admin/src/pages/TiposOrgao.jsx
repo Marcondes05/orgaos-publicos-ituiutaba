@@ -4,6 +4,7 @@ import api from "../services/api";
 function TiposOrgao() {
   const [tipos, setTipos] = useState([]);
   const [nome, setNome] = useState("");
+  const [descricao, setDescricao] = useState("");
   const [erro, setErro] = useState("");
 
   async function carregarTipos() {
@@ -25,8 +26,13 @@ function TiposOrgao() {
     }
 
     try {
-      await api.post("/tipos-orgaos", { nome });
+      await api.post("/tipos-orgaos", {
+        nome,
+        descricao,
+      });
+
       setNome("");
+      setDescricao("");
       carregarTipos();
     } catch (error) {
       setErro("Erro ao criar tipo de órgão");
@@ -47,8 +53,27 @@ function TiposOrgao() {
           placeholder="Nome do tipo de órgão"
           value={nome}
           onChange={(e) => setNome(e.target.value)}
-          style={{ marginRight: "10px", padding: "6px" }}
+          style={{
+            display: "block",
+            marginBottom: "8px",
+            padding: "6px",
+            width: "300px",
+          }}
         />
+
+        <textarea
+          placeholder="Descrição (ex: UBS, UPA, Pronto Atendimento...)"
+          value={descricao}
+          onChange={(e) => setDescricao(e.target.value)}
+          rows={3}
+          style={{
+            display: "block",
+            marginBottom: "8px",
+            padding: "6px",
+            width: "300px",
+          }}
+        />
+
         <button type="submit">Adicionar</button>
       </form>
 
@@ -56,7 +81,14 @@ function TiposOrgao() {
 
       <ul>
         {tipos.map((tipo) => (
-          <li key={tipo.id}>{tipo.nome}</li>
+          <li key={tipo.id} style={{ marginBottom: "10px" }}>
+            <strong>{tipo.nome}</strong>
+            {tipo.descricao && (
+              <p style={{ margin: "4px 0", color: "#555" }}>
+                {tipo.descricao}
+              </p>
+            )}
+          </li>
         ))}
       </ul>
     </div>

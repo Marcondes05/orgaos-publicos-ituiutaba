@@ -15,10 +15,12 @@ import {
   BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { Ionicons } from "@expo/vector-icons";
 
 import { useLocation } from "../hooks/useLocation";
 import { API_URL, GOOGLE_MAPS_API_KEY } from "../constants/api";
 import { mapStyle } from "../constants/mapStyle";
+import CustomMarker from "../components/CustomMarker";
 
 type Orgao = {
   id: number;
@@ -30,27 +32,33 @@ type Orgao = {
   horarioFechamento?: string;
   latitude: number | string;
   longitude: number | string;
+  tipoOrgao?: {
+    nome: string;
+  };
 };
 
 export default function Home() {
   const { location, errorMsg, loading } = useLocation();
+
   const [orgaos, setOrgaos] = useState<Orgao[]>([]);
   const [orgaoSelecionado, setOrgaoSelecionado] =
     useState<Orgao | null>(null);
-
   const [mostrarRota, setMostrarRota] = useState(false);
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const mapRef = useRef<MapView>(null);
   const snapPoints = useMemo(() => ["45%", "70%"], []);
 
+  /* ===============================
+     CARREGAR ÓRGÃOS
+  =============================== */
   async function carregarOrgaos() {
     try {
       const response = await fetch(`${API_URL}/orgaos`);
       const data = await response.json();
-      setOrgaos(data);
+      setOrgaos(Array.isArray(data) ? data : []);
     } catch {
-      // silencioso para MVP
+      setOrgaos([]);
     }
   }
 
@@ -58,12 +66,29 @@ export default function Home() {
     carregarOrgaos();
   }, []);
 
+  /* ===============================
+     CONTROLE DE SELEÇÃO
+  =============================== */
   function abrirDetalhes(orgao: Orgao) {
+    if (orgaoSelecionado?.id === orgao.id) {
+      fecharDetalhes();
+      return;
+    }
+
     setOrgaoSelecionado(orgao);
     setMostrarRota(false);
     bottomSheetRef.current?.present();
   }
 
+  function fecharDetalhes() {
+    bottomSheetRef.current?.dismiss();
+    setOrgaoSelecionado(null);
+    setMostrarRota(false);
+  }
+
+  /* ===============================
+     ROTAS
+  =============================== */
   function mostrarRotaNoMapa() {
     setMostrarRota(true);
   }
@@ -78,6 +103,9 @@ export default function Home() {
     Linking.openURL(url);
   }
 
+  /* ===============================
+     LOADING / ERRO
+  =============================== */
   if (loading) {
     return (
       <View style={styles.center}>
@@ -95,6 +123,9 @@ export default function Home() {
     );
   }
 
+  /* ===============================
+     RENDER
+  =============================== */
   return (
     <View style={{ flex: 1 }}>
       <MapView
@@ -113,23 +144,27 @@ export default function Home() {
           longitudeDelta: 0.02,
         }}
       >
-        {orgaos.map((orgao) => (
-          <Marker
-            key={orgao.id}
-            coordinate={{
-              latitude: Number(orgao.latitude),
-              longitude: Number(orgao.longitude),
-            }}
-            onPress={() => abrirDetalhes(orgao)}
-          />
-        ))}
+        {orgaos.map((orgao) => {
+          const selecionado = orgaoSelecionado?.id === orgao.id;
+
+          return (
+            <Marker
+              key={orgao.id}
+              coordinate={{
+                latitude: Number(orgao.latitude),
+                longitude: Number(orgao.longitude),
+              }}
+              onPress={() => abrirDetalhes(orgao)}
+              zIndex={selecionado ? 999 : 1}
+            >
+              <CustomMarker tipo={orgao.tipoOrgao?.nome} />
+            </Marker>
+          );
+        })}
 
         {mostrarRota && orgaoSelecionado && location && (
           <MapViewDirections
-            origin={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
+            origin={location}
             destination={{
               latitude: Number(orgaoSelecionado.latitude),
               longitude: Number(orgaoSelecionado.longitude),
@@ -138,53 +173,47 @@ export default function Home() {
             strokeWidth={4}
             strokeColor="#1e88e5"
             onReady={(result) => {
-              mapRef.current?.fitToCoordinates(
-                result.coordinates,
-                {
-                  edgePadding: {
-                    top: 100,
-                    bottom: 300,
-                    left: 50,
-                    right: 50,
-                  },
-                  animated: true,
-                }
-              );
+              mapRef.current?.fitToCoordinates(result.coordinates, {
+                edgePadding: {
+                  top: 100,
+                  bottom: 300,
+                  left: 50,
+                  right: 50,
+                },
+                animated: true,
+              });
             }}
           />
         )}
       </MapView>
 
+      {/* ===============================
+          BOTTOM SHEET
+      =============================== */}
       <BottomSheetModal
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        onDismiss={() => setMostrarRota(false)}
+        onDismiss={fecharDetalhes}
       >
         <BottomSheetView style={styles.sheetContent}>
           {orgaoSelecionado && (
             <>
-              <Text style={styles.sheetTitle}>
-                {orgaoSelecionado.nome}
-              </Text>
+              <View style={styles.sheetHeader}>
+                <Text style={styles.sheetTitle}>
+                  {orgaoSelecionado.nome}
+                </Text>
+
+                <TouchableOpacity onPress={fecharDetalhes}>
+                  <Ionicons name="close" size={26} color="#333" />
+                </TouchableOpacity>
+              </View>
 
               <Text style={styles.sheetText}>
                 📍 {orgaoSelecionado.endereco}
               </Text>
 
-              {orgaoSelecionado.telefone && (
-                <Text style={styles.sheetText}>
-                  ☎️ {orgaoSelecionado.telefone}
-                </Text>
-              )}
-
-              {orgaoSelecionado.email && (
-                <Text style={styles.sheetText}>
-                  ✉️ {orgaoSelecionado.email}
-                </Text>
-              )}
-
               <Text style={styles.sheetText}>
-                ⏰ Horário:{" "}
+                ⏰{" "}
                 {orgaoSelecionado.horarioAbertura &&
                 orgaoSelecionado.horarioFechamento
                   ? `${orgaoSelecionado.horarioAbertura} - ${orgaoSelecionado.horarioFechamento}`
@@ -216,23 +245,39 @@ export default function Home() {
   );
 }
 
+/* ===============================
+   STYLES
+=============================== */
 const styles = StyleSheet.create({
   map: { flex: 1 },
+
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  sheetContent: { padding: 16 },
+
+  sheetContent: {
+    padding: 16,
+  },
+
+  sheetHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+
   sheetTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 10,
   },
+
   sheetText: {
     fontSize: 15,
     marginBottom: 6,
   },
+
   routeButton: {
     marginTop: 12,
     backgroundColor: "#1e88e5",
@@ -240,6 +285,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
   },
+
   routeButtonText: {
     color: "#fff",
     fontSize: 15,

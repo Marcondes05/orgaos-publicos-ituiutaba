@@ -26,14 +26,13 @@ function App() {
             </RotaPrivada>
           }
         >
-          <Route index element={<Navigate to="/orgaos" />} />
-          <Route path="orgaos" element={<Orgaos />} />
-          <Route path="secretarias" element={<Secretarias />} />
           <Route path="tipos-orgaos" element={<TiposOrgaos />} />
+          <Route path="secretarias" element={<Secretarias />} />
+          <Route path="orgaos" element={<Orgaos />} />
         </Route>
 
-        {/* Qualquer rota inválida */}
-        <Route path="*" element={<Navigate to="/" />} />
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

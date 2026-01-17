@@ -1,0 +1,17 @@
+export const markerColors: Record<string, string> = {
+  "Saúde": "#E53935",
+  "Educação": "#1E88E5",
+  "Esporte e Lazer": "#43A047",
+  "Administração Pública": "#6D4C41",
+  "Planejamento e Gestão": "#5E35B1",
+  "Assistência Social": "#FB8C00",
+  "Meio Ambiente": "#2E7D32",
+  "Agricultura": "#8D6E63",
+  "Desenvolvimento Econômico e Turismo": "#00897B",
+  "Trânsito e Mobilidade": "#F4511E",
+  "Serviços Públicos": "#546E7A",
+  "Emergência": "#D32F2F",
+  "Jurídico e Controle": "#424242",
+  "Secretarias": "#3949AB",
+  "Outros": "#757575",
+};

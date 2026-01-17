@@ -19,22 +19,21 @@ function Dashboard() {
       <hr style={{ margin: "20px 0" }} />
 
       <nav style={{ marginBottom: "20px" }}>
-        <Link to="/tipos-orgaos">
+        <Link to="tipos-orgaos">
           <button>Tipos de Órgão</button>
         </Link>
 
-        <Link to="/secretarias">
+        <Link to="secretarias">
           <button>Secretarias</button>
         </Link>
 
-        <Link to="/orgaos">
+        <Link to="orgaos">
           <button>Órgãos Públicos</button>
         </Link>
       </nav>
 
       <hr />
 
-      {/* Aqui entram as páginas protegidas */}
       <Outlet />
     </div>
   );
