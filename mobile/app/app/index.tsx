@@ -8,6 +8,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   Linking,
+  TextInput,
+  ScrollView,
+  Keyboard,
+  Platform,
+  InputAccessoryView,
 } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -16,20 +21,23 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { Ionicons } from "@expo/vector-icons";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 import { useLocation } from "../hooks/useLocation";
 import { API_URL, GOOGLE_MAPS_API_KEY } from "../constants/api";
 import { mapStyle } from "../constants/mapStyle";
 import CustomMarker from "../components/CustomMarker";
 
+/* ===============================
+   TIPOS
+=============================== */
 type Orgao = {
   id: number;
   nome: string;
   endereco: string;
-  telefone?: string;
-  email?: string;
-  horarioAbertura?: string;
-  horarioFechamento?: string;
   latitude: number | string;
   longitude: number | string;
   tipoOrgao?: {
@@ -37,17 +45,44 @@ type Orgao = {
   };
 };
 
+const TIPOS_ORGAO = [
+  "Todos",
+  "Saúde",
+  "Educação",
+  "Esporte e Lazer",
+  "Administração Pública",
+  "Planejamento e Gestão",
+  "Assistência Social",
+  "Meio Ambiente",
+  "Agricultura",
+  "Desenvolvimento Econômico e Turismo",
+  "Trânsito e Mobilidade",
+  "Serviços Públicos",
+  "Emergência",
+  "Jurídico e Controle",
+  "Secretarias",
+  "Outros",
+];
+
+const inputAccessoryViewID = "keyboard-close";
+
 export default function Home() {
   const { location, errorMsg, loading } = useLocation();
+  const insets = useSafeAreaInsets();
 
   const [orgaos, setOrgaos] = useState<Orgao[]>([]);
   const [orgaoSelecionado, setOrgaoSelecionado] =
     useState<Orgao | null>(null);
-  const [mostrarRota, setMostrarRota] = useState(false);
+
+  const [textoBusca, setTextoBusca] = useState("");
+  const [tipoSelecionado, setTipoSelecionado] = useState("Todos");
+
+  const [rotaAtiva, setRotaAtiva] = useState(false);
+  const rotaTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const mapRef = useRef<MapView>(null);
-  const snapPoints = useMemo(() => ["45%", "70%"], []);
+  const snapPoints = useMemo(() => ["45%"], []);
 
   /* ===============================
      CARREGAR ÓRGÃOS
@@ -67,7 +102,24 @@ export default function Home() {
   }, []);
 
   /* ===============================
-     CONTROLE DE SELEÇÃO
+     FILTRO + BUSCA
+  =============================== */
+  const orgaosFiltrados = useMemo(() => {
+    return orgaos.filter((orgao) => {
+      const matchNome = orgao.nome
+        .toLowerCase()
+        .includes(textoBusca.toLowerCase());
+
+      const matchTipo =
+        tipoSelecionado === "Todos" ||
+        orgao.tipoOrgao?.nome === tipoSelecionado;
+
+      return matchNome && matchTipo;
+    });
+  }, [orgaos, textoBusca, tipoSelecionado]);
+
+  /* ===============================
+     SELEÇÃO
   =============================== */
   function abrirDetalhes(orgao: Orgao) {
     if (orgaoSelecionado?.id === orgao.id) {
@@ -75,22 +127,26 @@ export default function Home() {
       return;
     }
 
+    if (rotaTimeoutRef.current) {
+      clearTimeout(rotaTimeoutRef.current);
+    }
+
+    setRotaAtiva(false);
     setOrgaoSelecionado(orgao);
-    setMostrarRota(false);
     bottomSheetRef.current?.present();
+
+    rotaTimeoutRef.current = setTimeout(() => {
+      setRotaAtiva(true);
+    }, 2000);
   }
 
   function fecharDetalhes() {
+    if (rotaTimeoutRef.current) {
+      clearTimeout(rotaTimeoutRef.current);
+    }
     bottomSheetRef.current?.dismiss();
     setOrgaoSelecionado(null);
-    setMostrarRota(false);
-  }
-
-  /* ===============================
-     ROTAS
-  =============================== */
-  function mostrarRotaNoMapa() {
-    setMostrarRota(true);
+    setRotaAtiva(false);
   }
 
   function abrirGoogleMaps() {
@@ -99,13 +155,11 @@ export default function Home() {
     const origem = `${location.latitude},${location.longitude}`;
     const destino = `${orgaoSelecionado.latitude},${orgaoSelecionado.longitude}`;
 
-    const url = `https://www.google.com/maps/dir/?api=1&origin=${origem}&destination=${destino}&travelmode=driving`;
-    Linking.openURL(url);
+    Linking.openURL(
+      `https://www.google.com/maps/dir/?api=1&origin=${origem}&destination=${destino}`
+    );
   }
 
-  /* ===============================
-     LOADING / ERRO
-  =============================== */
   if (loading) {
     return (
       <View style={styles.center}>
@@ -123,46 +177,81 @@ export default function Home() {
     );
   }
 
-  /* ===============================
-     RENDER
-  =============================== */
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
+      {/* 🔍 BUSCA + FILTROS */}
+      <View
+        style={[
+          styles.searchContainer,
+          { top: insets.top + 8 },
+        ]}
+      >
+        <TextInput
+          placeholder="Buscar órgão..."
+          value={textoBusca}
+          onChangeText={setTextoBusca}
+          returnKeyType="search"
+          blurOnSubmit
+          clearButtonMode="while-editing"
+          inputAccessoryViewID={
+            Platform.OS === "ios" ? inputAccessoryViewID : undefined
+          }
+          style={styles.searchInput}
+        />
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {TIPOS_ORGAO.map((tipo) => (
+            <TouchableOpacity
+              key={tipo}
+              onPress={() => setTipoSelecionado(tipo)}
+              style={[
+                styles.filterChip,
+                tipoSelecionado === tipo &&
+                  styles.filterChipActive,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.filterText,
+                  tipoSelecionado === tipo &&
+                    styles.filterTextActive,
+                ]}
+              >
+                {tipo}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
+
       <MapView
         ref={mapRef}
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         customMapStyle={mapStyle}
         showsUserLocation
-        showsPointsOfInterest={false}
-        showsBuildings={false}
-        minZoomLevel={14}
+        minZoomLevel={11}
         initialRegion={{
           latitude: location.latitude,
           longitude: location.longitude,
-          latitudeDelta: 0.02,
-          longitudeDelta: 0.02,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1,
         }}
       >
-        {orgaos.map((orgao) => {
-          const selecionado = orgaoSelecionado?.id === orgao.id;
+        {orgaosFiltrados.map((orgao) => (
+          <Marker
+            key={orgao.id}
+            coordinate={{
+              latitude: Number(orgao.latitude),
+              longitude: Number(orgao.longitude),
+            }}
+            onPress={() => abrirDetalhes(orgao)}
+          >
+            <CustomMarker tipo={orgao.tipoOrgao?.nome} />
+          </Marker>
+        ))}
 
-          return (
-            <Marker
-              key={orgao.id}
-              coordinate={{
-                latitude: Number(orgao.latitude),
-                longitude: Number(orgao.longitude),
-              }}
-              onPress={() => abrirDetalhes(orgao)}
-              zIndex={selecionado ? 999 : 1}
-            >
-              <CustomMarker tipo={orgao.tipoOrgao?.nome} />
-            </Marker>
-          );
-        })}
-
-        {mostrarRota && orgaoSelecionado && location && (
+        {rotaAtiva && orgaoSelecionado && (
           <MapViewDirections
             origin={location}
             destination={{
@@ -172,39 +261,41 @@ export default function Home() {
             apikey={GOOGLE_MAPS_API_KEY}
             strokeWidth={4}
             strokeColor="#1e88e5"
-            onReady={(result) => {
-              mapRef.current?.fitToCoordinates(result.coordinates, {
-                edgePadding: {
-                  top: 100,
-                  bottom: 300,
-                  left: 50,
-                  right: 50,
-                },
-                animated: true,
-              });
-            }}
+            onError={() => setRotaAtiva(false)}
           />
         )}
       </MapView>
 
-      {/* ===============================
-          BOTTOM SHEET
-      =============================== */}
+      {/* 🔑 INPUT ACCESSORY (iOS) */}
+      {Platform.OS === "ios" && (
+        <InputAccessoryView nativeID={inputAccessoryViewID}>
+          <View style={styles.accessory}>
+            <TouchableOpacity onPress={Keyboard.dismiss}>
+              <Text style={styles.accessoryText}>X</Text>
+            </TouchableOpacity>
+          </View>
+        </InputAccessoryView>
+      )}
+
       <BottomSheetModal
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         onDismiss={fecharDetalhes}
       >
-        <BottomSheetView style={styles.sheetContent}>
+        <BottomSheetView
+          style={[
+            styles.sheetContent,
+            { paddingBottom: insets.bottom + 16 },
+          ]}
+        >
           {orgaoSelecionado && (
             <>
               <View style={styles.sheetHeader}>
                 <Text style={styles.sheetTitle}>
                   {orgaoSelecionado.nome}
                 </Text>
-
                 <TouchableOpacity onPress={fecharDetalhes}>
-                  <Ionicons name="close" size={26} color="#333" />
+                  <Ionicons name="close" size={26} />
                 </TouchableOpacity>
               </View>
 
@@ -212,25 +303,8 @@ export default function Home() {
                 📍 {orgaoSelecionado.endereco}
               </Text>
 
-              <Text style={styles.sheetText}>
-                ⏰{" "}
-                {orgaoSelecionado.horarioAbertura &&
-                orgaoSelecionado.horarioFechamento
-                  ? `${orgaoSelecionado.horarioAbertura} - ${orgaoSelecionado.horarioFechamento}`
-                  : "Não informado"}
-              </Text>
-
               <TouchableOpacity
                 style={styles.routeButton}
-                onPress={mostrarRotaNoMapa}
-              >
-                <Text style={styles.routeButtonText}>
-                  🧭 Mostrar rota no mapa
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[styles.routeButton, { backgroundColor: "#444" }]}
                 onPress={abrirGoogleMaps}
               >
                 <Text style={styles.routeButtonText}>
@@ -241,7 +315,7 @@ export default function Home() {
           )}
         </BottomSheetView>
       </BottomSheetModal>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -257,6 +331,56 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  searchContainer: {
+    position: "absolute",
+    width: "100%",
+    paddingHorizontal: 12,
+    zIndex: 10,
+  },
+
+  searchInput: {
+    backgroundColor: "#fff",
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+
+  filterChip: {
+    backgroundColor: "#eee",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    marginRight: 8,
+  },
+
+  filterChipActive: {
+    backgroundColor: "#1e88e5",
+  },
+
+  filterText: {
+    fontSize: 13,
+    color: "#333",
+  },
+
+  filterTextActive: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+
+  accessory: {
+    backgroundColor: "#f2f2f2",
+    padding: 10,
+    alignItems: "flex-end",
+    borderTopWidth: 1,
+    borderColor: "#ddd",
+  },
+
+  accessoryText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#1e88e5",
+  },
+
   sheetContent: {
     padding: 16,
   },
@@ -264,7 +388,6 @@ const styles = StyleSheet.create({
   sheetHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
     marginBottom: 10,
   },
 
@@ -274,8 +397,7 @@ const styles = StyleSheet.create({
   },
 
   sheetText: {
-    fontSize: 15,
-    marginBottom: 6,
+    marginBottom: 8,
   },
 
   routeButton: {
@@ -288,7 +410,6 @@ const styles = StyleSheet.create({
 
   routeButtonText: {
     color: "#fff",
-    fontSize: 15,
     fontWeight: "bold",
   },
 });

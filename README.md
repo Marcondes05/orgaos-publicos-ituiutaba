@@ -103,192 +103,82 @@ orgaos-publicos-ituiutaba/
 
 ## 📆 Fases de Desenvolvimento
 
-### 🔹 Fase 1 – Planejamento e Ambiente (CONCLUÍDA)
-✔ Definição conceitual das telas  
-✔ Definição do modelo de dados  
-✔ Criação do repositório Git  
-✔ Configuração do backend  
-✔ Integração do Prisma com PostgreSQL  
-✔ Ambiente validado  
+### 🔹 Fase 1 – Planejamento e Ambiente ✅
+- Definição do escopo
+- Modelagem de dados
+- Configuração do ambiente
+- Repositório Git
+
+### 🔹 Fase 2 – Backend ✅
+- API REST
+- CRUD completo
+- Autenticação JWT
+- Integração com banco de dados
+
+### 🔹 Fase 3 – Sistema Web Administrativo ✅
+- Login administrativo
+- Proteção de rotas
+- CRUD completo
+- Cadastro com mapa
+
+### 🔹 Fase 4 – Aplicativo Mobile (Base) ✅
+- Mapa com localização do usuário
+- Exibição de órgãos
+- Bottom Sheet com detalhes
+- Rotas no mapa
+- Abertura no Google Maps
 
 ---
 
-### 🔹 Fase 2 – Backend (CONCLUÍDA)
-✔ Modelagem do banco de dados  
-✔ API REST com Express  
-✔ CRUD de Tipos de Órgão, Secretarias e Órgãos  
-✔ Autenticação com JWT  
+## 🚧 Fase 5 – Melhorias (EM ANDAMENTO)
+
+### 🗓️ DIA 1 — Revisão Geral ✅
+- Revisão completa do código
+- Organização do projeto
+- Planejamento técnico das melhorias
+
+### 🗓️ DIA 2 — Ícones Personalizados no Mapa (Mobile) ✅
+- Ícones por tipo de órgão
+- Pins personalizados
+- Melhor leitura visual do mapa
+
+### 🗓️ DIA 3 — Busca e Filtros no Mobile ✅
+- Campo de busca por nome
+- Filtro por tipo de órgão
+- Layout otimizado para mobile
+- Safe Area (iOS e Android)
+- Correção de crashes no iOS
+- Delay controlado para traçar rotas
+- UX semelhante ao Google Maps
+
+✅ **Resultado:** navegação mais rápida, mapa limpo e experiência estável.
+---
+
+## 📅 Planejamento Ajustado (Escopo Reduzido)
+
+Para garantir a entrega do MVP dentro do prazo do estágio, o escopo foi ajustado:
+
+### 🗓️ DIA 4 — Autocomplete e Centralização (PRÓXIMO)
+- Autocomplete simples na busca
+- Centralizar o mapa ao selecionar um órgão
+- Abrir Bottom Sheet automaticamente ao selecionar
+
+### 🗓️ DIA 5 — Ajustes Finais de UX/UI
+- Refinar espaçamentos
+- Melhorar visual do Bottom Sheet
+- Pequenos ajustes de usabilidade
+
+### 🗓️ DIA 6 — Testes Finais e Documentação
+- Testes gerais
+- Correção de pequenos bugs
+- Preparação para apresentação do estágio
+
+> Funcionalidades como **status aberto/fechado** e **fotos dos órgãos** foram
+> **adiadas**, pois não são essenciais para o MVP.
 
 ---
 
-### 🔹 Fase 3 – Sistema Web Administrativo (CONCLUÍDA)
-✔ Login administrativo  
-✔ Proteção de rotas  
-✔ CRUD completo  
-✔ Cadastro com mapa  
-
----
-
-### 🔹 Fase 4 – Aplicativo Mobile (CONCLUÍDA)
-✔ Mapa com localização do usuário  
-✔ Detalhes do órgão (Bottom Sheet)  
-✔ Rotas no mapa e Google Maps  
-
----
-
-### 🔹 Fase 5 – Melhorias (EM ANDAMENTO)
-🚧 Ícones por tipo  
-🚧 Filtros  
-🚧 Busca com autocomplete  
-🚧 UX/UI  
-
-### 🗓️ DIA 1 — Revisão Geral e Planejamento Técnico
-
-    Objetivo: Garantir base estável antes das melhorias.
-
-    Atividades:
-
-    Revisão geral do código (backend, admin e mobile)
-
-    Limpeza final de código (logs, comentários desnecessários)
-
-    Revisão do README e alinhamento do cronograma
-
-    Definição técnica de como cada melhoria será implementada
-
-    📌 Resultado esperado: código organizado e plano claro de execução.
-
-### 🗓️ DIA 2 — Ícones Personalizados no Mapa (Mobile)
-
-    Objetivo: Melhorar leitura visual do mapa.
-
-    Atividades:
-
-    Definir ícones por tipo de órgão (UBS, Secretaria, Escola, etc.)
-
-    Associar tipo de órgão ao ícone correspondente
-
-    Aplicar ícones personalizados nos marcadores do mapa
-
-    Testes visuais no mapa
-
-    📌 Resultado esperado: mapa mais intuitivo e visualmente organizado.
-
-### 🗓️ DIA 3 — Filtro de Busca por Tipo de Órgão (Mobile)
-
-    Objetivo: Reduzir poluição visual e facilitar navegação.
-
-    Atividades:
-
-    Criar seletor de tipo de órgão (chips ou dropdown)
-
-    Filtrar os órgãos exibidos no mapa conforme o tipo selecionado
-
-    Ajustar estado e comportamento do mapa
-
-    Testes de usabilidade
-
-    📌 Resultado esperado: usuário visualiza apenas os órgãos desejados.
-
-### 🗓️ DIA 4 — Campo de Busca com Autocomplete (Mobile)
-
-    Objetivo: Facilitar localização direta de um órgão.
-
-    Atividades:
-
-    Criar campo de busca por nome do órgão
-
-    Implementar sugestões enquanto o usuário digita
-
-    Centralizar o mapa ao selecionar um órgão
-
-    Abrir automaticamente o Bottom Sheet com os detalhes
-
-    📌 Resultado esperado: busca rápida e eficiente por nome.
-
-### 🗓️ DIA 5 — Melhorias de UX/UI no Mobile
-
-    Objetivo: Tornar o aplicativo mais agradável e intuitivo.
-
-    Atividades:
-
-    Ajustar espaçamentos e tamanhos de fonte
-
-    Melhorar organização do Bottom Sheet
-
-    Padronizar cores e botões
-
-    Melhorar feedback visual das ações do usuário
-
-    📌 Resultado esperado: aplicativo mais limpo e profissional.
-
-### 🗓️ DIA 6 — Melhorias de UX/UI no Painel Administrativo
-
-    Objetivo: Facilitar o uso do sistema pela prefeitura.
-
-    Atividades:
-
-    Reorganizar formulários
-
-    Melhorar feedback de sucesso/erro
-
-    Ajustar navegação e layout
-
-    Pequenas melhorias visuais (legibilidade e organização)
-
-    📌 Resultado esperado: painel mais intuitivo e fácil de usar.
-
-### 🗓️ DIA 7 — Exibição de Status do Órgão (Aberto / Fechado)
-
-    Objetivo: Informação útil ao cidadão.
-
-    Atividades:
-
-    Utilizar horário de funcionamento já cadastrado
-
-    Calcular status com base no horário atual
-
-    Exibir status visual no Bottom Sheet
-
-    Testar diferentes horários
-
-    📌 Resultado esperado: usuário sabe se o órgão está aberto no momento.
-
-### 🗓️ DIA 8 — Inclusão de Foto do Órgão
-
-    Objetivo: Melhor reconhecimento visual do local.
-
-    Atividades:
-
-    Utilizar campo de URL de imagem já existente
-
-    Exibir foto no Bottom Sheet do mobile
-
-    Ajustar layout para imagem
-
-    Testes com imagens reais
-
-    📌 Resultado esperado: visual mais rico e informativo.
-
-### 🗓️ DIA 9 — Testes Gerais e Ajustes Finais
-
-    Objetivo: Garantir estabilidade do sistema.
-
-    Atividades:
-
-    Testes completos no mobile
-
-    Testes no painel administrativo
-
-    Correção de pequenos bugs
-
-    Ajustes finos de usabilidade
-
-    📌 Resultado esperado: sistema estável para demonstração.
-
----
-
-### 🔹 Fase 6 – Demonstração (PLANEJADA)
+### 🔹 Fase 6 – Demonstração
 ⬜ Testes finais  
 ⬜ Documentação  
 ⬜ Apresentação  
@@ -340,7 +230,7 @@ Projeto desenvolvido como parte de um **estágio supervisionado**, com foco em q
 
     Local: http://localhost:5173
 
-    admin@ituiutaba.mg.gov.br
+    login de teste: admin@ituiutaba.mg.gov.br
 
     📌 Acesse no navegador:
 
