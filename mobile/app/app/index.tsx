@@ -78,7 +78,7 @@ export default function Home() {
   const [tipoSelecionado, setTipoSelecionado] = useState("Todos");
 
   const [rotaAtiva, setRotaAtiva] = useState(false);
-  const rotaTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const rotaTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const mapRef = useRef<MapView>(null);
@@ -121,6 +121,21 @@ export default function Home() {
   /* ===============================
      SELEÇÃO
   =============================== */
+
+  function centralizarMapa(orgao: Orgao) {
+    if (!mapRef.current) return;
+
+    mapRef.current.animateToRegion(
+      {
+        latitude: Number(orgao.latitude),
+        longitude: Number(orgao.longitude),
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
+      },
+      600
+    );
+  }
+
   function abrirDetalhes(orgao: Orgao) {
     if (orgaoSelecionado?.id === orgao.id) {
       fecharDetalhes();
@@ -133,6 +148,7 @@ export default function Home() {
 
     setRotaAtiva(false);
     setOrgaoSelecionado(orgao);
+    centralizarMapa(orgao);
     bottomSheetRef.current?.present();
 
     rotaTimeoutRef.current = setTimeout(() => {
