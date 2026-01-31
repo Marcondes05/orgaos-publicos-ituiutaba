@@ -119,9 +119,8 @@ export default function Home() {
   }, [orgaos, textoBusca, tipoSelecionado]);
 
   /* ===============================
-     SELEÇÃO
+     MAPA / SELEÇÃO
   =============================== */
-
   function centralizarMapa(orgao: Orgao) {
     if (!mapRef.current) return;
 
@@ -215,6 +214,30 @@ export default function Home() {
           style={styles.searchInput}
         />
 
+        {/* 🔽 AUTOCOMPLETE */}
+        {textoBusca.length > 0 && (
+          <View style={styles.autocomplete}>
+            {orgaosFiltrados.map((orgao) => (
+              <TouchableOpacity
+                key={orgao.id}
+                onPress={() => {
+                  Keyboard.dismiss();
+
+                  // ✅ CORREÇÃO DEFINITIVA:
+                  // limpa filtros para não remover o marker do mapa
+                  setTextoBusca("");
+                  setTipoSelecionado("Todos");
+
+                  abrirDetalhes(orgao);
+                }}
+                style={styles.autocompleteItem}
+              >
+                <Text>{orgao.nome}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {TIPOS_ORGAO.map((tipo) => (
             <TouchableOpacity
@@ -282,7 +305,7 @@ export default function Home() {
         )}
       </MapView>
 
-      {/* 🔑 INPUT ACCESSORY (iOS) */}
+      {/* 🔑 INPUT ACCESSORY iOS */}
       {Platform.OS === "ios" && (
         <InputAccessoryView nativeID={inputAccessoryViewID}>
           <View style={styles.accessory}>
@@ -359,6 +382,18 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     marginBottom: 8,
+  },
+
+  autocomplete: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+
+  autocompleteItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: "#eee",
   },
 
   filterChip: {

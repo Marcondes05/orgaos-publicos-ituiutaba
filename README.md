@@ -158,17 +158,17 @@ orgaos-publicos-ituiutaba/
 
 Para garantir a entrega do MVP dentro do prazo do estágio, o escopo foi ajustado:
 
-### 🗓️ Fase 9 — Autocomplete e Centralização (PRÓXIMO)
+### 🗓️ DIA 4 — Autocomplete e Centralização (PRÓXIMO)
 - Autocomplete simples na busca
 - Centralizar o mapa ao selecionar um órgão
 - Abrir Bottom Sheet automaticamente ao selecionar
 
-### 🗓️ Fase 10 — Ajustes Finais de UX/UI
+### 🗓️ DIA 5 — Ajustes Finais de UX/UI
 - Refinar espaçamentos
 - Melhorar visual do Bottom Sheet
 - Pequenos ajustes de usabilidade
 
-### 🗓️ Fase 11 — Testes Finais e Documentação
+### 🗓️ DIA 6 — Testes Finais e Documentação
 - Testes gerais
 - Correção de pequenos bugs
 - Preparação para apresentação do estágio
@@ -178,7 +178,7 @@ Para garantir a entrega do MVP dentro do prazo do estágio, o escopo foi ajustad
 
 ---
 
-### 🔹 Fase 12 – Demonstração
+### 🔹 Fase 6 – Demonstração
 ⬜ Testes finais  
 ⬜ Documentação  
 ⬜ Apresentação  
