@@ -138,43 +138,52 @@ orgaos-publicos-ituiutaba/
 - Planejamento técnico das melhorias
 
 ### 🗓️ DIA 2 — Ícones Personalizados no Mapa (Mobile) ✅
-- Ícones por tipo de órgão
-- Pins personalizados
-- Melhor leitura visual do mapa
+- Definição de ícones por tipo de órgão
+- Pins personalizados com cor e ícone
+- Destaque visual do órgão selecionado
+- Comportamento consistente semelhante ao Google Maps
 
 ### 🗓️ DIA 3 — Busca e Filtros no Mobile ✅
 - Campo de busca por nome
 - Filtro por tipo de órgão
 - Layout otimizado para mobile
-- Safe Area (iOS e Android)
+- Compatibilidade com Safe Area (iOS e Android)
 - Correção de crashes no iOS
 - Delay controlado para traçar rotas
-- UX semelhante ao Google Maps
+- Experiência de navegação fluida e estável
 
 ✅ **Resultado:** navegação mais rápida, mapa limpo e experiência estável.
----
-
-## 📅 Planejamento Ajustado (Escopo Reduzido)
-
-Para garantir a entrega do MVP dentro do prazo do estágio, o escopo foi ajustado:
 
 ### 🗓️ DIA 4 — Autocomplete e Centralização (PRÓXIMO)
-- Autocomplete simples na busca
-- Centralizar o mapa ao selecionar um órgão
-- Abrir Bottom Sheet automaticamente ao selecionar
+- Autocomplete simples na busca por nome
+- Lista de sugestões ao digitar
+- Centralização automática do mapa ao selecionar um órgão
+- Abertura automática do Bottom Sheet
+- Correções para evitar sumiço de markers
+- Feedback visual de “traçando rota”
+- Estabilização definitiva contra crashes ao trocar de órgão
+
+✅ **Resultado:** busca intuitiva e comportamento profissional do mapa.
 
 ### 🗓️ DIA 5 — Ajustes Finais de UX/UI
-- Refinar espaçamentos
-- Melhorar visual do Bottom Sheet
-- Pequenos ajustes de usabilidade
+- Melhorar hierarquia visual do Bottom Sheet
+- Ajustar espaçamentos e tipografia
+- Exibir todas as informações do órgão:
+- Endereço
+- Telefone
+- Email
+- Horário de funcionamento
+- Exibir status do órgão:
+    🟢 Aberto
+    🔴 Fechado
+- Padronizar cores e botões
+- Pequenos feedbacks visuais (toque, estados ativos)
 
 ### 🗓️ DIA 6 — Testes Finais e Documentação
-- Testes gerais
-- Correção de pequenos bugs
+- Testes completos no aplicativo mobile
+- Ajustes finais de usabilidade
+- Revisão geral do sistema
 - Preparação para apresentação do estágio
-
-> Funcionalidades como **status aberto/fechado** e **fotos dos órgãos** foram
-> **adiadas**, pois não são essenciais para o MVP.
 
 ---
 
