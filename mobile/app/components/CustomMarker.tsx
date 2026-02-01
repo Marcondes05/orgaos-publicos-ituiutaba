@@ -27,16 +27,16 @@ const styles = StyleSheet.create({
   },
 
   pin: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 17,
+    height: 17,
+    borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
   },
 
   icon: {
-    width: 16,
-    height: 16,
+    width: 17,
+    height: 17,
     resizeMode: "contain",
   },
 

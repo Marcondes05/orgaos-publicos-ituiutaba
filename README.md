@@ -185,6 +185,9 @@ orgaos-publicos-ituiutaba/
 - Revisão geral do sistema
 - Preparação para apresentação do estágio
 
+### 🗓️ DIA 7 — Melhorar interface web do admin
+
+
 ---
 
 ### 🔹 Fase 6 – Demonstração
