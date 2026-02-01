@@ -222,12 +222,8 @@ export default function Home() {
                 key={orgao.id}
                 onPress={() => {
                   Keyboard.dismiss();
-
-                  // ✅ CORREÇÃO DEFINITIVA:
-                  // limpa filtros para não remover o marker do mapa
                   setTextoBusca("");
                   setTipoSelecionado("Todos");
-
                   abrirDetalhes(orgao);
                 }}
                 style={styles.autocompleteItem}
@@ -262,6 +258,16 @@ export default function Home() {
           ))}
         </ScrollView>
       </View>
+
+      {/* 🚦 OVERLAY TRAÇANDO ROTA */}
+      {orgaoSelecionado && !rotaAtiva && (
+        <View style={styles.routeLoading}>
+          <ActivityIndicator size="small" color="#fff" />
+          <Text style={styles.routeLoadingText}>
+            Traçando rota…
+          </Text>
+        </View>
+      )}
 
       <MapView
         ref={mapRef}
@@ -416,6 +422,27 @@ const styles = StyleSheet.create({
   filterTextActive: {
     color: "#fff",
     fontWeight: "bold",
+  },
+
+  routeLoading: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -80 }, { translateY: -20 }],
+    backgroundColor: "rgba(0,0,0,0.7)",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    zIndex: 20,
+  },
+
+  routeLoadingText: {
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: "600",
   },
 
   accessory: {
