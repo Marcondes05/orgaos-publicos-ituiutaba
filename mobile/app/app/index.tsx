@@ -40,6 +40,11 @@ type Orgao = {
   endereco: string;
   latitude: number | string;
   longitude: number | string;
+  telefone?: string;
+  email?: string;
+  horarioAbertura?: string;
+  horarioFechamento?: string;
+  fotoUrl?: string;
   tipoOrgao?: {
     nome: string;
   };
@@ -78,6 +83,7 @@ export default function Home() {
   const [tipoSelecionado, setTipoSelecionado] = useState("Todos");
 
   const [rotaAtiva, setRotaAtiva] = useState(false);
+  const [calculandoRota, setCalculandoRota] = useState(false);
   const rotaTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -136,23 +142,20 @@ export default function Home() {
   }
 
   function abrirDetalhes(orgao: Orgao) {
-    if (orgaoSelecionado?.id === orgao.id) {
-      fecharDetalhes();
-      return;
-    }
-
     if (rotaTimeoutRef.current) {
       clearTimeout(rotaTimeoutRef.current);
     }
 
     setRotaAtiva(false);
+    setCalculandoRota(true);
     setOrgaoSelecionado(orgao);
     centralizarMapa(orgao);
     bottomSheetRef.current?.present();
 
     rotaTimeoutRef.current = setTimeout(() => {
+      setCalculandoRota(false);
       setRotaAtiva(true);
-    }, 2000);
+    }, 1800);
   }
 
   function fecharDetalhes() {
@@ -162,6 +165,7 @@ export default function Home() {
     bottomSheetRef.current?.dismiss();
     setOrgaoSelecionado(null);
     setRotaAtiva(false);
+    setCalculandoRota(false);
   }
 
   function abrirGoogleMaps() {
@@ -195,12 +199,7 @@ export default function Home() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* 🔍 BUSCA + FILTROS */}
-      <View
-        style={[
-          styles.searchContainer,
-          { top: insets.top + 8 },
-        ]}
-      >
+      <View style={[styles.searchContainer, { top: insets.top + 8 }]}>
         <TextInput
           placeholder="Buscar órgão..."
           value={textoBusca}
@@ -214,7 +213,6 @@ export default function Home() {
           style={styles.searchInput}
         />
 
-        {/* 🔽 AUTOCOMPLETE */}
         {textoBusca.length > 0 && (
           <View style={styles.autocomplete}>
             {orgaosFiltrados.map((orgao) => (
@@ -259,8 +257,8 @@ export default function Home() {
         </ScrollView>
       </View>
 
-      {/* 🚦 OVERLAY TRAÇANDO ROTA */}
-      {orgaoSelecionado && !rotaAtiva && (
+      {/* 🚦 OVERLAY CENTRAL – TRAÇANDO ROTA */}
+      {calculandoRota && (
         <View style={styles.routeLoading}>
           <ActivityIndicator size="small" color="#fff" />
           <Text style={styles.routeLoadingText}>
@@ -347,6 +345,26 @@ export default function Home() {
               <Text style={styles.sheetText}>
                 📍 {orgaoSelecionado.endereco}
               </Text>
+
+              {orgaoSelecionado.telefone && (
+                <Text style={styles.sheetText}>
+                  📞 {orgaoSelecionado.telefone}
+                </Text>
+              )}
+
+              {orgaoSelecionado.email && (
+                <Text style={styles.sheetText}>
+                  ✉️ {orgaoSelecionado.email}
+                </Text>
+              )}
+
+              {orgaoSelecionado.horarioAbertura &&
+                orgaoSelecionado.horarioFechamento && (
+                  <Text style={styles.sheetText}>
+                    ⏰ {orgaoSelecionado.horarioAbertura} -{" "}
+                    {orgaoSelecionado.horarioFechamento}
+                  </Text>
+                )}
 
               <TouchableOpacity
                 style={styles.routeButton}
@@ -475,7 +493,7 @@ const styles = StyleSheet.create({
   },
 
   sheetText: {
-    marginBottom: 8,
+    marginBottom: 6,
   },
 
   routeButton: {
