@@ -46,6 +46,7 @@ model Orgao {
   email       String?
   horarioAbertura   String?
   horarioFechamento String?
+  diasFuncionamento String?
   fotoUrl     String?
   ativo       Boolean  @default(true)
 

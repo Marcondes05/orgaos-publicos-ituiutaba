@@ -243,7 +243,7 @@ Projeto desenvolvido como parte de um **estágio supervisionado**, com foco em q
     Local: http://localhost:5173
 
     login de teste: admin@ituiutaba.mg.gov.br
-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBpdHVpdXRhYmEubWcuZ292LmJyIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcwMDgxODczLCJleHAiOjE3NzAxNjgyNzN9.t5ozw8dXFuNyeb8R7hn-Is4sPEBlCrELk7QfVHHoKlA
     📌 Acesse no navegador:
 
     http://localhost:5173
