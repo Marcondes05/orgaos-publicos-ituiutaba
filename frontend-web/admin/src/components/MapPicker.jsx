@@ -12,7 +12,12 @@ const defaultCenter = {
   lng: -49.4652, // Ituiutaba
 };
 
-function MapPicker({ enderecoCompleto, latitude, longitude, onLocationChange }) {
+function MapPicker({
+  enderecoCompleto,
+  latitude,
+  longitude,
+  onLocationChange,
+}) {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries: ["places"],
@@ -23,23 +28,16 @@ function MapPicker({ enderecoCompleto, latitude, longitude, onLocationChange }) 
   const [enderecoConfirmado, setEnderecoConfirmado] = useState("");
 
   /* ===============================
-     SINCRONIZAR AO EDITAR ÓRGÃO
+     CARREGA COORDENADAS AO EDITAR
   =============================== */
   useEffect(() => {
-    if (latitude && longitude && map) {
-      const newCenter = {
-        lat: Number(latitude),
-        lng: Number(longitude),
-      };
-
-      setCenter(newCenter);
-      map.panTo(newCenter);
-      setEnderecoConfirmado("");
+    if (latitude && longitude) {
+      setCenter({ lat: latitude, lng: longitude });
     }
-  }, [latitude, longitude, map]);
+  }, [latitude, longitude]);
 
   /* ===============================
-     BUSCA POR ENDEREÇO (CEP + Nº)
+     BUSCA POR ENDEREÇO (CEP)
   =============================== */
   useEffect(() => {
     if (!enderecoCompleto || !map || !window.google) return;
@@ -76,12 +74,16 @@ function MapPicker({ enderecoCompleto, latitude, longitude, onLocationChange }) 
       { location: { lat, lng } },
       (results, status) => {
         if (status === "OK" && results[0]) {
-          setEnderecoConfirmado(results[0].formatted_address);
+          const enderecoFormatado =
+            results[0].formatted_address;
+
+          setEnderecoConfirmado(enderecoFormatado);
+
+          // 🔥 ENVIA TUDO PARA O FORMULÁRIO
+          onLocationChange(lat, lng, enderecoFormatado);
         }
       }
     );
-
-    onLocationChange(lat, lng);
   }
 
   if (!isLoaded) return <p>Carregando mapa...</p>;
@@ -96,11 +98,10 @@ function MapPicker({ enderecoCompleto, latitude, longitude, onLocationChange }) 
         options={{
           streetViewControl: false,
           mapTypeControl: false,
-          fullscreenControl: false,
         }}
       />
 
-      {/* 📍 PIN FIXO CENTRAL (PADRÃO GOOGLE MAPS) */}
+      {/* 📍 PIN FIXO PADRÃO GOOGLE */}
       <img
         src="https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi2.png"
         alt="Pin"
@@ -124,7 +125,13 @@ function MapPicker({ enderecoCompleto, latitude, longitude, onLocationChange }) 
 
       {/* ENDEREÇO CONFIRMADO */}
       {enderecoConfirmado && (
-        <p style={{ marginTop: "8px", fontSize: "14px", color: "#333" }}>
+        <p
+          style={{
+            marginTop: "8px",
+            fontSize: "14px",
+            color: "#333",
+          }}
+        >
           📍 <strong>Endereço confirmado:</strong>
           <br />
           {enderecoConfirmado}

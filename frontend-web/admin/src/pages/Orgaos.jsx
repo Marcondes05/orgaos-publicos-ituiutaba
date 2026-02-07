@@ -30,11 +30,13 @@ function Orgaos() {
 
   async function carregarDados() {
     try {
-      const [orgaosRes, tiposRes, secretariasRes] = await Promise.all([
-        api.get("/orgaos"),
-        api.get("/tipos-orgaos"),
-        api.get("/secretarias"),
-      ]);
+      const [orgaosRes, tiposRes, secretariasRes] =
+        await Promise.all([
+          api.get("/orgaos"),
+          api.get("/tipos-orgaos"),
+          api.get("/secretarias"),
+        ]);
+
       setOrgaos(orgaosRes.data);
       setTipos(tiposRes.data);
       setSecretarias(secretariasRes.data);
@@ -153,15 +155,10 @@ function Orgaos() {
     <div className="page">
       <div className="card">
         <h2 className="section-title">
-          {orgaoEditando ? "Editar Órgão Público" : "Cadastrar Órgão Público"}
+          {orgaoEditando
+            ? "Editar Órgão Público"
+            : "Cadastrar Órgão Público"}
         </h2>
-
-        {orgaoEditando && (
-          <div className="edicao-alerta">
-            ⚠️ Você está editando um órgão.
-            As alterações substituirão os dados atuais.
-          </div>
-        )}
 
         <form onSubmit={salvarOrgao} className="orgaos-form">
           <input placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} />
@@ -215,12 +212,14 @@ function Orgaos() {
               enderecoCompleto={enderecoCompleto}
               latitude={latitude}
               longitude={longitude}
-              onLocationChange={(lat, lng) => {
+              onLocationChange={(lat, lng, enderecoFormatado) => {
                 setLatitude(lat);
                 setLongitude(lng);
+                if (enderecoFormatado) {
+                  setEndereco(enderecoFormatado);
+                }
               }}
             />
-
           </div>
 
           {erro && <p className="error">{erro}</p>}
