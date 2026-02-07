@@ -1,0 +1,36 @@
+.dashboard {
+  background: #f4f6f8;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.dashboard-header {
+  background: #ffffff;
+  border-bottom: 1px solid #ddd;
+}
+
+.dashboard-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  text-align: center;
+}
+
+.dashboard-header-inner h1 {
+  margin-bottom: 4px;
+}
+
+.dashboard-nav {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+/* CONTEÚDO */
+.dashboard-content {
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 0 16px;
+}

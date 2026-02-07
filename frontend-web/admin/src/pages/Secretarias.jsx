@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import "./Secretarias.css";
 
 function Secretarias() {
   const [secretarias, setSecretarias] = useState([]);
@@ -51,56 +52,60 @@ function Secretarias() {
   }, []);
 
   return (
-    <div>
-      <h2>Secretarias</h2>
+    <div className="page">
+      <div className="card">
+        <h2 className="section-title">Secretarias</h2>
 
-      <form onSubmit={criarSecretaria} style={{ marginBottom: "20px" }}>
-        <input
-          type="text"
-          placeholder="Nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
-        />
+        <form onSubmit={criarSecretaria} className="orgaos-form">
+          <input
+            type="text"
+            placeholder="Nome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
 
-        <input
-          type="text"
-          placeholder="Endereço"
-          value={endereco}
-          onChange={(e) => setEndereco(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
-        />
+          <input
+            type="text"
+            placeholder="Endereço"
+            value={endereco}
+            onChange={(e) => setEndereco(e.target.value)}
+          />
 
-        <input
-          type="text"
-          placeholder="Telefone"
-          value={telefone}
-          onChange={(e) => setTelefone(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
-        />
+          <input
+            type="text"
+            placeholder="Telefone"
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)}
+          />
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ display: "block", marginBottom: "8px", padding: "6px" }}
-        />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <button type="submit">Adicionar</button>
-      </form>
+          {erro && <p className="error">{erro}</p>}
 
-      {erro && <p style={{ color: "red" }}>{erro}</p>}
+          <button type="submit">Adicionar Secretaria</button>
+        </form>
+      </div>
 
-      <ul>
-        {secretarias.map((sec) => (
-          <li key={sec.id}>
-            <strong>{sec.nome}</strong> — {sec.endereco}
-          </li>
-        ))}
-      </ul>
+      <div className="card">
+        <h3 className="section-title">Secretarias cadastradas</h3>
+
+        <ul className="orgaos-list">
+          {secretarias.map((sec) => (
+            <li key={sec.id}>
+              <strong>{sec.nome}</strong><br />
+              {sec.endereco}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
+
 }
 
 export default Secretarias;

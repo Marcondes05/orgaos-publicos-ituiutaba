@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
@@ -8,10 +9,12 @@ function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleLogin(e) {
     e.preventDefault();
     setErro("");
+    setLoading(true);
 
     try {
       const response = await api.post("/auth/login", {
@@ -25,45 +28,43 @@ function Login() {
       localStorage.setItem("usuario", JSON.stringify(usuario));
 
       navigate("/");
-    } catch (error) {
+    } catch {
       setErro("Email ou senha inválidos");
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div style={{ padding: "40px", maxWidth: "400px", margin: "auto" }}>
-      <h1>Login Admin</h1>
-      <p>Painel Administrativo – Ituiutaba</p>
+    <div className="login-container">
+      <div className="login-card">
+        <h1>Painel Administrativo</h1>
+        <p className="login-subtitle">Prefeitura de Ituiutaba</p>
 
-      <form onSubmit={handleLogin}>
-        <div style={{ marginBottom: "10px" }}>
+        <form onSubmit={handleLogin}>
           <label>Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{ width: "100%", padding: "8px" }}
             required
           />
-        </div>
 
-        <div style={{ marginBottom: "10px" }}>
           <label>Senha</label>
           <input
             type="password"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
-            style={{ width: "100%", padding: "8px" }}
             required
           />
-        </div>
 
-        {erro && <p style={{ color: "red" }}>{erro}</p>}
+          {erro && <p className="error">{erro}</p>}
 
-        <button type="submit" style={{ padding: "10px", width: "100%" }}>
-          Entrar
-        </button>
-      </form>
+          <button type="submit" disabled={loading}>
+            {loading ? "Entrando..." : "Entrar"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

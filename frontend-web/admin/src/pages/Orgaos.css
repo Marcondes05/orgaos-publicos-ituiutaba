@@ -1,0 +1,51 @@
+.orgaos-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.orgaos-form-full {
+  grid-column: 1 / -1;
+}
+
+.dias-checkbox {
+  display: flex;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.dias-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.orgaos-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.orgaos-list {
+  list-style: none;
+}
+
+.orgaos-list li {
+  background: #f9fafb;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+/* 🔥 DESTAQUE MODO EDIÇÃO */
+.edicao-alerta {
+  background: #fff3cd;
+  border: 1px solid #ffecb5;
+  color: #664d03;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}

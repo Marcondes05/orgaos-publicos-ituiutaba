@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import "./TiposOrgao.css";
 
 function TiposOrgao() {
   const [tipos, setTipos] = useState([]);
@@ -44,55 +45,46 @@ function TiposOrgao() {
   }, []);
 
   return (
-    <div>
-      <h2>Tipos de Órgão</h2>
+    <div className="page">
+      <div className="card">
+        <h2 className="section-title">Tipos de Órgão</h2>
 
-      <form onSubmit={criarTipo} style={{ marginBottom: "20px" }}>
-        <input
-          type="text"
-          placeholder="Nome do tipo de órgão"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          style={{
-            display: "block",
-            marginBottom: "8px",
-            padding: "6px",
-            width: "300px",
-          }}
-        />
+        <form onSubmit={criarTipo} className="orgaos-form">
+          <input
+            type="text"
+            placeholder="Nome do tipo de órgão"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
 
-        <textarea
-          placeholder="Descrição (ex: UBS, UPA, Pronto Atendimento...)"
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
-          rows={3}
-          style={{
-            display: "block",
-            marginBottom: "8px",
-            padding: "6px",
-            width: "300px",
-          }}
-        />
+          <textarea
+            placeholder="Descrição (opcional)"
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            rows={3}
+          />
 
-        <button type="submit">Adicionar</button>
-      </form>
+          {erro && <p className="error">{erro}</p>}
 
-      {erro && <p style={{ color: "red" }}>{erro}</p>}
+          <button type="submit">Adicionar Tipo</button>
+        </form>
+      </div>
 
-      <ul>
-        {tipos.map((tipo) => (
-          <li key={tipo.id} style={{ marginBottom: "10px" }}>
-            <strong>{tipo.nome}</strong>
-            {tipo.descricao && (
-              <p style={{ margin: "4px 0", color: "#555" }}>
-                {tipo.descricao}
-              </p>
-            )}
-          </li>
-        ))}
-      </ul>
+      <div className="card">
+        <h3 className="section-title">Tipos cadastrados</h3>
+
+        <ul className="orgaos-list">
+          {tipos.map((tipo) => (
+            <li key={tipo.id}>
+              <strong>{tipo.nome}</strong>
+              {tipo.descricao && <p>{tipo.descricao}</p>}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
+
 }
 
 export default TiposOrgao;
