@@ -45,6 +45,7 @@ type Orgao = {
   horarioAbertura?: string;
   horarioFechamento?: string;
   fotoUrl?: string;
+  status?: "ABERTO" | "FECHADO";
   tipoOrgao?: {
     nome: string;
   };
@@ -342,6 +343,32 @@ export default function Home() {
                 </TouchableOpacity>
               </View>
 
+              {/* STATUS */}
+              <View style={styles.statusContainer}>
+                <View
+                  style={[
+                    styles.statusBadge,
+                    orgaoSelecionado.status === "ABERTO"
+                      ? styles.statusOpen
+                      : styles.statusClosed,
+                  ]}
+                >
+                  <Text style={styles.statusText}>
+                    {orgaoSelecionado.status === "ABERTO"
+                      ? "🟢 Aberto agora"
+                      : "🔴 Fechado no momento"}
+                  </Text>
+                </View>
+
+                {orgaoSelecionado.horarioAbertura &&
+                  orgaoSelecionado.horarioFechamento && (
+                    <Text style={styles.statusHour}>
+                      Horário: {orgaoSelecionado.horarioAbertura} às{" "}
+                      {orgaoSelecionado.horarioFechamento}
+                    </Text>
+                  )}
+              </View>
+
               <Text style={styles.sheetText}>
                 📍 {orgaoSelecionado.endereco}
               </Text>
@@ -357,14 +384,6 @@ export default function Home() {
                   ✉️ {orgaoSelecionado.email}
                 </Text>
               )}
-
-              {orgaoSelecionado.horarioAbertura &&
-                orgaoSelecionado.horarioFechamento && (
-                  <Text style={styles.sheetText}>
-                    ⏰ {orgaoSelecionado.horarioAbertura} -{" "}
-                    {orgaoSelecionado.horarioFechamento}
-                  </Text>
-                )}
 
               <TouchableOpacity
                 style={styles.routeButton}
@@ -484,7 +503,7 @@ const styles = StyleSheet.create({
   sheetHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: 6,
   },
 
   sheetTitle: {
@@ -507,5 +526,36 @@ const styles = StyleSheet.create({
   routeButtonText: {
     color: "#fff",
     fontWeight: "bold",
+  },
+
+  statusContainer: {
+    marginBottom: 10,
+  },
+
+  statusBadge: {
+    alignSelf: "flex-start",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+
+  statusOpen: {
+    backgroundColor: "#e6f4ea",
+  },
+
+  statusClosed: {
+    backgroundColor: "#fdecea",
+  },
+
+  statusText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+  },
+
+  statusHour: {
+    marginTop: 4,
+    fontSize: 13,
+    color: "#555",
   },
 });

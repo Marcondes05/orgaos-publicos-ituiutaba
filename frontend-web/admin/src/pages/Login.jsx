@@ -24,10 +24,14 @@ function Login() {
 
       const { token, usuario } = response.data;
 
+      // ⏰ expiração em 7 dias
+      const expiresAt = Date.now() + 1 * 60 * 60 * 1000;
+
       localStorage.setItem("token", token);
       localStorage.setItem("usuario", JSON.stringify(usuario));
+      localStorage.setItem("token_expires_at", expiresAt);
 
-      navigate("/");
+      navigate("/", { replace: true });
     } catch {
       setErro("Email ou senha inválidos");
     } finally {
