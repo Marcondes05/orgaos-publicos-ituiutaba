@@ -31,6 +31,7 @@ import { API_URL, GOOGLE_MAPS_API_KEY } from "../constants/api";
 import { mapStyle } from "../constants/mapStyle";
 import CustomMarker from "../components/CustomMarker";
 
+
 /* ===============================
    TIPOS
 =============================== */
@@ -198,206 +199,208 @@ export default function Home() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      {/* 🔍 BUSCA + FILTROS */}
-      <View style={[styles.searchContainer, { top: insets.top + 8 }]}>
-        <TextInput
-          placeholder="Buscar órgão..."
-          value={textoBusca}
-          onChangeText={setTextoBusca}
-          returnKeyType="search"
-          blurOnSubmit
-          clearButtonMode="while-editing"
-          inputAccessoryViewID={
-            Platform.OS === "ios" ? inputAccessoryViewID : undefined
-          }
-          style={styles.searchInput}
-        />
+    <>      
+      <SafeAreaView style={{ flex: 1 }}>
+        {/* 🔍 BUSCA + FILTROS */}
+        <View style={[styles.searchContainer, { top: insets.top + 8 }]}>
+          <TextInput
+            placeholder="Buscar órgão..."
+            value={textoBusca}
+            onChangeText={setTextoBusca}
+            returnKeyType="search"
+            blurOnSubmit
+            clearButtonMode="while-editing"
+            inputAccessoryViewID={
+              Platform.OS === "ios" ? inputAccessoryViewID : undefined
+            }
+            style={styles.searchInput}
+          />
 
-        {textoBusca.length > 0 && (
-          <View style={styles.autocomplete}>
-            {orgaosFiltrados.map((orgao) => (
+          {textoBusca.length > 0 && (
+            <View style={styles.autocomplete}>
+              {orgaosFiltrados.map((orgao) => (
+                <TouchableOpacity
+                  key={orgao.id}
+                  onPress={() => {
+                    Keyboard.dismiss();
+                    setTextoBusca("");
+                    setTipoSelecionado("Todos");
+                    abrirDetalhes(orgao);
+                  }}
+                  style={styles.autocompleteItem}
+                >
+                  <Text>{orgao.nome}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {TIPOS_ORGAO.map((tipo) => (
               <TouchableOpacity
-                key={orgao.id}
-                onPress={() => {
-                  Keyboard.dismiss();
-                  setTextoBusca("");
-                  setTipoSelecionado("Todos");
-                  abrirDetalhes(orgao);
-                }}
-                style={styles.autocompleteItem}
-              >
-                <Text>{orgao.nome}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {TIPOS_ORGAO.map((tipo) => (
-            <TouchableOpacity
-              key={tipo}
-              onPress={() => setTipoSelecionado(tipo)}
-              style={[
-                styles.filterChip,
-                tipoSelecionado === tipo &&
-                  styles.filterChipActive,
-              ]}
-            >
-              <Text
+                key={tipo}
+                onPress={() => setTipoSelecionado(tipo)}
                 style={[
-                  styles.filterText,
+                  styles.filterChip,
                   tipoSelecionado === tipo &&
-                    styles.filterTextActive,
+                    styles.filterChipActive,
                 ]}
               >
-                {tipo}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-
-      {/* 🚦 OVERLAY CENTRAL – TRAÇANDO ROTA */}
-      {calculandoRota && (
-        <View style={styles.routeLoading}>
-          <ActivityIndicator size="small" color="#fff" />
-          <Text style={styles.routeLoadingText}>
-            Traçando rota…
-          </Text>
-        </View>
-      )}
-
-      <MapView
-        ref={mapRef}
-        style={styles.map}
-        provider={PROVIDER_GOOGLE}
-        customMapStyle={mapStyle}
-        showsUserLocation
-        minZoomLevel={11}
-        initialRegion={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 0.1,
-          longitudeDelta: 0.1,
-        }}
-      >
-        {orgaosFiltrados.map((orgao) => (
-          <Marker
-            key={orgao.id}
-            coordinate={{
-              latitude: Number(orgao.latitude),
-              longitude: Number(orgao.longitude),
-            }}
-            onPress={() => abrirDetalhes(orgao)}
-          >
-            <CustomMarker tipo={orgao.tipoOrgao?.nome} />
-          </Marker>
-        ))}
-
-        {rotaAtiva && orgaoSelecionado && (
-          <MapViewDirections
-            origin={location}
-            destination={{
-              latitude: Number(orgaoSelecionado.latitude),
-              longitude: Number(orgaoSelecionado.longitude),
-            }}
-            apikey={GOOGLE_MAPS_API_KEY}
-            strokeWidth={4}
-            strokeColor="#1e88e5"
-            onError={() => setRotaAtiva(false)}
-          />
-        )}
-      </MapView>
-
-      {/* 🔑 INPUT ACCESSORY iOS */}
-      {Platform.OS === "ios" && (
-        <InputAccessoryView nativeID={inputAccessoryViewID}>
-          <View style={styles.accessory}>
-            <TouchableOpacity onPress={Keyboard.dismiss}>
-              <Text style={styles.accessoryText}>X</Text>
-            </TouchableOpacity>
-          </View>
-        </InputAccessoryView>
-      )}
-
-      <BottomSheetModal
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        onDismiss={fecharDetalhes}
-      >
-        <BottomSheetView
-          style={[
-            styles.sheetContent,
-            { paddingBottom: insets.bottom + 16 },
-          ]}
-        >
-          {orgaoSelecionado && (
-            <>
-              <View style={styles.sheetHeader}>
-                <Text style={styles.sheetTitle}>
-                  {orgaoSelecionado.nome}
-                </Text>
-                <TouchableOpacity onPress={fecharDetalhes}>
-                  <Ionicons name="close" size={26} />
-                </TouchableOpacity>
-              </View>
-
-              {/* STATUS */}
-              <View style={styles.statusContainer}>
-                <View
+                <Text
                   style={[
-                    styles.statusBadge,
-                    orgaoSelecionado.status === "ABERTO"
-                      ? styles.statusOpen
-                      : styles.statusClosed,
+                    styles.filterText,
+                    tipoSelecionado === tipo &&
+                      styles.filterTextActive,
                   ]}
                 >
-                  <Text style={styles.statusText}>
-                    {orgaoSelecionado.status === "ABERTO"
-                      ? "🟢 Aberto agora"
-                      : "🔴 Fechado no momento"}
-                  </Text>
-                </View>
-
-                {orgaoSelecionado.horarioAbertura &&
-                  orgaoSelecionado.horarioFechamento && (
-                    <Text style={styles.statusHour}>
-                      Horário: {orgaoSelecionado.horarioAbertura} às{" "}
-                      {orgaoSelecionado.horarioFechamento}
-                    </Text>
-                  )}
-              </View>
-
-              <Text style={styles.sheetText}>
-                📍 {orgaoSelecionado.endereco}
-              </Text>
-
-              {orgaoSelecionado.telefone && (
-                <Text style={styles.sheetText}>
-                  📞 {orgaoSelecionado.telefone}
-                </Text>
-              )}
-
-              {orgaoSelecionado.email && (
-                <Text style={styles.sheetText}>
-                  ✉️ {orgaoSelecionado.email}
-                </Text>
-              )}
-
-              <TouchableOpacity
-                style={styles.routeButton}
-                onPress={abrirGoogleMaps}
-              >
-                <Text style={styles.routeButtonText}>
-                  🚗 Abrir no Google Maps
+                  {tipo}
                 </Text>
               </TouchableOpacity>
-            </>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* 🚦 OVERLAY CENTRAL – TRAÇANDO ROTA */}
+        {calculandoRota && (
+          <View style={styles.routeLoading}>
+            <ActivityIndicator size="small" color="#fff" />
+            <Text style={styles.routeLoadingText}>
+              Traçando rota…
+            </Text>
+          </View>
+        )}
+
+        <MapView
+          ref={mapRef}
+          style={styles.map}
+          provider={PROVIDER_GOOGLE}
+          customMapStyle={mapStyle}
+          showsUserLocation
+          minZoomLevel={11}
+          initialRegion={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1,
+          }}
+        >
+          {orgaosFiltrados.map((orgao) => (
+            <Marker
+              key={orgao.id}
+              coordinate={{
+                latitude: Number(orgao.latitude),
+                longitude: Number(orgao.longitude),
+              }}
+              onPress={() => abrirDetalhes(orgao)}
+            >
+              <CustomMarker tipo={orgao.tipoOrgao?.nome} />
+            </Marker>
+          ))}
+
+          {rotaAtiva && orgaoSelecionado && (
+            <MapViewDirections
+              origin={location}
+              destination={{
+                latitude: Number(orgaoSelecionado.latitude),
+                longitude: Number(orgaoSelecionado.longitude),
+              }}
+              apikey={GOOGLE_MAPS_API_KEY}
+              strokeWidth={4}
+              strokeColor="#1e88e5"
+              onError={() => setRotaAtiva(false)}
+            />
           )}
-        </BottomSheetView>
-      </BottomSheetModal>
-    </SafeAreaView>
+        </MapView>
+
+        {/* 🔑 INPUT ACCESSORY iOS */}
+        {Platform.OS === "ios" && (
+          <InputAccessoryView nativeID={inputAccessoryViewID}>
+            <View style={styles.accessory}>
+              <TouchableOpacity onPress={Keyboard.dismiss}>
+                <Text style={styles.accessoryText}>X</Text>
+              </TouchableOpacity>
+            </View>
+          </InputAccessoryView>
+        )}
+
+        <BottomSheetModal
+          ref={bottomSheetRef}
+          snapPoints={snapPoints}
+          onDismiss={fecharDetalhes}
+        >
+          <BottomSheetView
+            style={[
+              styles.sheetContent,
+              { paddingBottom: insets.bottom + 16 },
+            ]}
+          >
+            {orgaoSelecionado && (
+              <>
+                <View style={styles.sheetHeader}>
+                  <Text style={styles.sheetTitle}>
+                    {orgaoSelecionado.nome}
+                  </Text>
+                  <TouchableOpacity onPress={fecharDetalhes}>
+                    <Ionicons name="close" size={26} />
+                  </TouchableOpacity>
+                </View>
+
+                {/* STATUS */}
+                <View style={styles.statusContainer}>
+                  <View
+                    style={[
+                      styles.statusBadge,
+                      orgaoSelecionado.status === "ABERTO"
+                        ? styles.statusOpen
+                        : styles.statusClosed,
+                    ]}
+                  >
+                    <Text style={styles.statusText}>
+                      {orgaoSelecionado.status === "ABERTO"
+                        ? "🟢 Aberto agora"
+                        : "🔴 Fechado no momento"}
+                    </Text>
+                  </View>
+
+                  {orgaoSelecionado.horarioAbertura &&
+                    orgaoSelecionado.horarioFechamento && (
+                      <Text style={styles.statusHour}>
+                        Horário: {orgaoSelecionado.horarioAbertura} às{" "}
+                        {orgaoSelecionado.horarioFechamento}
+                      </Text>
+                    )}
+                </View>
+
+                <Text style={styles.sheetText}>
+                  📍 {orgaoSelecionado.endereco}
+                </Text>
+
+                {orgaoSelecionado.telefone && (
+                  <Text style={styles.sheetText}>
+                    📞 {orgaoSelecionado.telefone}
+                  </Text>
+                )}
+
+                {orgaoSelecionado.email && (
+                  <Text style={styles.sheetText}>
+                    ✉️ {orgaoSelecionado.email}
+                  </Text>
+                )}
+
+                <TouchableOpacity
+                  style={styles.routeButton}
+                  onPress={abrirGoogleMaps}
+                >
+                  <Text style={styles.routeButtonText}>
+                    🚗 Abrir no Google Maps
+                  </Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </BottomSheetView>
+        </BottomSheetModal>
+      </SafeAreaView>
+    </>
   );
 }
 

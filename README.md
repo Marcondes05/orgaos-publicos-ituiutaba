@@ -1,80 +1,133 @@
-# Órgãos Públicos de Ituiutaba – MVP
+# 📍 Órgãos Públicos de Ituiutaba – MVP
 
-## 📌 Descrição do Projeto
-Este projeto consiste no desenvolvimento de um **sistema informativo de órgãos públicos do município de Ituiutaba**, composto por:
-
-- 💻 Um **sistema web administrativo** para uso da Prefeitura
-- 📱 Um **aplicativo mobile** voltado ao cidadão
-
-A solução tem como finalidade **centralizar, organizar e disponibilizar informações dos órgãos públicos municipais**, utilizando **geolocalização e integração com o Google Maps**, facilitando o acesso da população aos serviços públicos.
+## 🏛 Sistema Informativo Municipal com Geolocalização
 
 ---
 
-## 🎯 Objetivo Geral
+## 📌 1. Sobre o Projeto
+
+O projeto **Órgãos Públicos de Ituiutaba** é uma solução digital desenvolvida durante estágio supervisionado, composta por:
+
+- 💻 Sistema Web Administrativo  
+- 📱 Aplicativo Mobile para o cidadão  
+
+A plataforma tem como objetivo centralizar, organizar e disponibilizar informações dos órgãos públicos municipais de forma moderna, intuitiva e acessível, utilizando **geolocalização e integração com o Google Maps**.
+
+---
+
+## 🎯 2. Objetivo Geral
+
 Desenvolver uma plataforma digital que permita aos cidadãos localizar órgãos públicos do município de Ituiutaba, visualizar informações detalhadas e traçar rotas até esses locais, ao mesmo tempo em que oferece à prefeitura um painel administrativo para gerenciamento dos dados.
 
 ---
 
-## 🎯 Objetivos Específicos
-- Exibir órgãos públicos em mapa interativo
-- Permitir busca e filtragem por tipo de órgão
-- Exibir informações detalhadas (endereço, telefone, horário de funcionamento)
-- Possibilitar criação de rotas no mapa e via Google Maps
-- Permitir à prefeitura gerenciar os dados por meio de um painel administrativo
-- Centralizar e padronizar as informações dos órgãos públicos municipais
-- Garantir segurança e controle de acesso administrativo
+## 🎯 3. Objetivos Específicos
+
+- Exibir órgãos públicos em mapa interativo  
+- Permitir busca por nome  
+- Filtrar por tipo de órgão  
+- Exibir informações detalhadas:
+  - Endereço  
+  - Telefone  
+  - Email  
+  - Horário de funcionamento  
+  - Status (Aberto/Fechado)  
+- Possibilitar criação de rotas no mapa  
+- Permitir abertura da rota diretamente no Google Maps  
+- Oferecer painel administrativo com controle de acesso  
+- Centralizar e padronizar informações municipais  
 
 ---
 
-## 🧱 Tecnologias Utilizadas
+## 🧠 4. Problema Identificado
 
-### Backend
-- Node.js
-- Express
-- Prisma ORM
-- PostgreSQL (Supabase)
-- JWT (autenticação)
+Antes do sistema:
 
-### Frontend Web (Admin)
-- React.js (Vite)
-- Axios
-- React Router DOM
-- Google Maps JavaScript API
+- Informações estavam dispersas  
+- Dificuldade de localização dos órgãos  
+- Falta de mapa centralizado  
+- Dependência de atendimento presencial para dados básicos  
 
-### Mobile
-- React Native (Expo)
-- react-native-maps
-- Google Maps SDK (Android / iOS)
-- Google Directions API
-- Geolocalização do dispositivo
-- Bottom Sheet
-
-### Outras Ferramentas
-- Git / GitHub
-- Postman / Insomnia
-- Google Cloud Console
+O projeto propõe resolver esse problema através da digitalização e centralização das informações públicas.
 
 ---
 
-## 🗂 Estrutura do Projeto
+## 🏗 5. Arquitetura do Sistema
 
-```text
+### 🔹 Backend
+
+- Node.js  
+- Express  
+- Prisma ORM  
+- PostgreSQL (Supabase)  
+- JWT (Autenticação)  
+- API REST  
+
+**Responsabilidades:**
+
+- CRUD completo  
+- Autenticação segura  
+- Controle de acesso  
+- Validação de dados  
+- Expiração de token  
+- Integração com banco de dados  
+
+---
+
+### 🔹 Frontend Web (Admin)
+
+- React.js (Vite)  
+- React Router DOM  
+- Axios  
+- Google Maps JavaScript API  
+
+**Funcionalidades:**
+
+- Login administrativo  
+- Proteção de rotas  
+- Cadastro de órgãos com mapa  
+- Edição e exclusão  
+- Gerenciamento de tipos e secretarias  
+
+---
+
+### 🔹 Mobile (Cidadão)
+
+- React Native (Expo)  
+- react-native-maps  
+- Google Maps SDK  
+- Google Directions API  
+- Bottom Sheet  
+- Geolocalização do dispositivo  
+
+**Funcionalidades:**
+
+- Mapa interativo  
+- Localização atual do usuário  
+- Pins personalizados por tipo  
+- Busca com autocomplete  
+- Filtros horizontais  
+- Bottom Sheet com detalhes  
+- Traçar rota no mapa  
+- Abrir no Google Maps  
+- Status do órgão (🟢 Aberto / 🔴 Fechado)  
+
+---
+
+## 📂 6. Estrutura do Projeto
+
+```
 orgaos-publicos-ituiutaba/
 │
 ├── backend/
 │   ├── prisma/
-│   │   ├── schema.prisma
-│   │   └── migrations/
-│   │
 │   ├── src/
 │   │   ├── controllers/
 │   │   ├── routes/
 │   │   ├── middlewares/
 │   │   ├── services/
 │   │   └── app.js
-│   │
 │   ├── server.js
-│   ├── .env
 │   └── package.json
 │
 ├── frontend-web/
@@ -84,7 +137,6 @@ orgaos-publicos-ituiutaba/
 │       │   ├── components/
 │       │   ├── services/
 │       │   └── App.jsx
-│       ├── .env
 │       └── package.json
 │
 ├── mobile/
@@ -95,163 +147,165 @@ orgaos-publicos-ituiutaba/
 │       ├── constants/
 │       └── package.json
 │
-├── .gitignore
 └── README.md
 ```
 
 ---
 
-## 📆 Fases de Desenvolvimento
+## 📅 7. Fases de Desenvolvimento
 
-### 🔹 Fase 1 – Planejamento e Ambiente ✅
-- Definição do escopo
-- Modelagem de dados
-- Configuração do ambiente
-- Repositório Git
+### ✅ Fase 1 – Planejamento
 
-### 🔹 Fase 2 – Backend ✅
-- API REST
-- CRUD completo
-- Autenticação JWT
-- Integração com banco de dados
-
-### 🔹 Fase 3 – Sistema Web Administrativo ✅
-- Login administrativo
-- Proteção de rotas
-- CRUD completo
-- Cadastro com mapa
-
-### 🔹 Fase 4 – Aplicativo Mobile (Base) ✅
-- Mapa com localização do usuário
-- Exibição de órgãos
-- Bottom Sheet com detalhes
-- Rotas no mapa
-- Abertura no Google Maps
+- Definição do escopo  
+- Modelagem de dados  
+- Configuração do ambiente  
+- Estruturação do repositório  
 
 ---
 
-## 🚧 Fase 5 – Melhorias (EM ANDAMENTO)
+### ✅ Fase 2 – Backend
 
-### 🗓️ DIA 1 — Revisão Geral ✅
-- Revisão completa do código
-- Organização do projeto
-- Planejamento técnico das melhorias
-
-### 🗓️ DIA 2 — Ícones Personalizados no Mapa (Mobile) ✅
-- Definição de ícones por tipo de órgão
-- Pins personalizados com cor e ícone
-- Destaque visual do órgão selecionado
-- Comportamento consistente semelhante ao Google Maps
-
-### 🗓️ DIA 3 — Busca e Filtros no Mobile ✅
-- Campo de busca por nome
-- Filtro por tipo de órgão
-- Layout otimizado para mobile
-- Compatibilidade com Safe Area (iOS e Android)
-- Correção de crashes no iOS
-- Delay controlado para traçar rotas
-- Experiência de navegação fluida e estável
-
-✅ **Resultado:** navegação mais rápida, mapa limpo e experiência estável.
-
-### 🗓️ DIA 4 — Autocomplete e Centralização (PRÓXIMO)
-- Autocomplete simples na busca por nome
-- Lista de sugestões ao digitar
-- Centralização automática do mapa ao selecionar um órgão
-- Abertura automática do Bottom Sheet
-- Correções para evitar sumiço de markers
-- Feedback visual de “traçando rota”
-- Estabilização definitiva contra crashes ao trocar de órgão
-
-✅ **Resultado:** busca intuitiva e comportamento profissional do mapa.
-
-### 🗓️ DIA 5 — Ajustes Finais de UX/UI
-- Melhorar hierarquia visual do Bottom Sheet
-- Ajustar espaçamentos e tipografia
-- Exibir todas as informações do órgão:
-- Endereço
-- Telefone
-- Email
-- Horário de funcionamento
-- Exibir status do órgão:
-    🟢 Aberto
-    🔴 Fechado
-- Padronizar cores e botões
-- Pequenos feedbacks visuais (toque, estados ativos)
-
-### 🗓️ DIA 6 — Testes Finais e Documentação
-- Testes completos no aplicativo mobile
-- Ajustes finais de usabilidade
-- Revisão geral do sistema
-- Preparação para apresentação do estágio
-
-### 🗓️ DIA 7 — Melhorar interface web do admin
-
+- API REST funcional  
+- CRUD completo  
+- Autenticação JWT  
+- Integração com banco PostgreSQL  
+- Controle de expiração de token  
 
 ---
 
-### 🔹 Fase 6 – Demonstração
-⬜ Testes finais  
-⬜ Documentação  
-⬜ Apresentação  
+### ✅ Fase 3 – Sistema Web Administrativo
+
+- Login administrativo  
+- Proteção de rotas  
+- Cadastro com mapa  
+- Gerenciamento completo de dados  
 
 ---
 
-## 🏛 Observações Finais
-Projeto desenvolvido como parte de um **estágio supervisionado**, com foco em qualidade, usabilidade e evolução futura.
+### ✅ Fase 4 – Aplicativo Mobile (Base)
+
+- Mapa com localização do usuário  
+- Exibição de órgãos  
+- Bottom Sheet com detalhes  
+- Traçado de rota  
+- Abertura no Google Maps  
 
 ---
 
-## Rodar o Programa 
+### 🔄 Fase 5 – Melhorias de UX/UI
 
-    🖥️ TERMINAL 1 — BACKEND (API)
-    📁 Caminho
-    cd backend
+- Ícones personalizados por tipo  
+- Filtros horizontais  
+- Autocomplete na busca  
+- Feedback visual ao traçar rota  
+- Status do órgão (aberto/fechado)  
+- Melhorias de estabilidade no iOS  
+- Correções de crash  
+- Experiência semelhante ao Google Maps  
 
-    ▶️ Comando para rodar
-    npm install   # só na primeira vez
-    npm run dev
+---
 
-    ✅ Resultado esperado
+### ⏳ Fase 6 – Próximos Passos
 
-    No terminal:
+- Melhorias visuais no painel web  
+- Deploy da API  
+- Deploy do app (Play Store)  
+- Dashboard com métricas  
+- Sistema de logs  
+- Controle de permissões por nível  
 
-    Servidor rodando na porta 3000
+---
 
+## ▶️ 8. Como Rodar o Projeto
 
-    📌 A API ficará em:
+### 🖥️ TERMINAL 1 — BACKEND
 
-    http://localhost:3000
+```bash
+cd backend
+npm install
+npm run dev
+```
 
+API disponível em:
 
-    ou
+```
+http://localhost:3000
+```
 
-    http://SEU_IP:3000
+---
 
-    🖥️ TERMINAL 2 — FRONTEND WEB (ADMIN)
-    📁 Caminho
-    cd frontend-web/admin
+### 🖥️ TERMINAL 2 — FRONTEND WEB (ADMIN)
 
-    ▶️ Comando para rodar
-    npm install   # só na primeira vez
-    npm run dev
+```bash
+cd frontend-web/admin
+npm install
+npm run dev
+```
 
-    ✅ Resultado esperado
+Acesse:
 
-    No terminal:
+```
+http://localhost:5173
+```
 
-    Local: http://localhost:5173
+---
 
-    login de teste: admin@ituiutaba.mg.gov.br
-                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBpdHVpdXRhYmEubWcuZ292LmJyIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcwMDgxODczLCJleHAiOjE3NzAxNjgyNzN9.t5ozw8dXFuNyeb8R7hn-Is4sPEBlCrELk7QfVHHoKlA
-    📌 Acesse no navegador:
+### 🖥️ TERMINAL 3 — MOBILE (APP)
 
-    http://localhost:5173
+```bash
+cd mobile/app
+npm install
+npx expo start
+```
 
-    🖥️ TERMINAL 3 — MOBILE (APP)
-    📁 Caminho
-    cd mobile/app
+---
 
-    ▶️ Comando para rodar
-    npm install   # só na primeira vez
-    npx expo start
+## 🔐 Login Administrativo de Teste
+
+```
+Email: admin@ituiutaba.mg.gov.br
+Senha: ********
+```
+
+*(Recomenda-se alterar credenciais antes de produção)*
+
+---
+
+## 🚀 Diferenciais do Projeto
+
+- Integração real com Google Maps  
+- Geolocalização dinâmica  
+- Sistema administrativo completo  
+- Separação clara de responsabilidades  
+- Arquitetura escalável  
+- Controle de autenticação com expiração de token  
+- Foco em usabilidade e experiência do usuário  
+
+---
+
+## 🏛 Contexto Acadêmico
+
+Projeto desenvolvido como parte de estágio supervisionado, com foco em:
+
+- Arquitetura de software  
+- Segurança  
+- UX/UI  
+- Boas práticas  
+- Versionamento  
+- Estrutura escalável  
+
+---
+
+## 📌 Status do Projeto
+
+🟢 MVP Funcional  
+🟡 Melhorias em andamento  
+🔵 Preparação para apresentação final  
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+See the [LICENSE](./LICENSE) file for more information.
